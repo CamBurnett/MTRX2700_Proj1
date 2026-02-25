@@ -4,7 +4,4 @@ Project 1
 People
 Chelsea Satriavi
 Angus Malcolm
-
-Testing Push Request
-
 Cameron Burnett
