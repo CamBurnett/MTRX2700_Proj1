@@ -1,0 +1,3 @@
+--- 25th Feb Week 1 ---
+- Introduced members
+- Learned to set up and use Git
