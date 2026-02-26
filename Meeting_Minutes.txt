@@ -1,4 +1,5 @@
 --- 25th Feb Week 1 ---
 - Introduced members
 - Learned to set up and use Git
+- Opened STM32CubeIDE and experimented connecting discovery board to the IDE.
 - Minutes - All 120min.
