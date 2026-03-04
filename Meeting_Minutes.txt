@@ -3,3 +3,8 @@
 - Learned to set up and use Git
 - Opened STM32CubeIDE and experimented connecting discovery board to the IDE.
 - Minutes - All 120min.
+
+-- 4th March Week 2 --
+- Set up Git
+- Started Assignment
+- Minutes - All 120min.
