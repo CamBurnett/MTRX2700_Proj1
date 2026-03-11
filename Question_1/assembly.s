@@ -23,34 +23,75 @@ main:
 
 
 count:
-	@Load the byte in register 3 at the value of R2
-	LDRB R3, [R1,R2]
+	@Load the R2th byte of R1 into R3
+	LDRB R3, [R1, R2]
 
-	@Check if charcter is null
+	@Check if the byte is a null value
 	CMP R3, #0
 
-	BEQ done
+	@If null, start casing function
+	BEQ check_casing
 
-	@Check if character is lowercased
-	CMP R3, #0x61
-	BLT next
-
-	CMP R3, #0x7A
-	BGT next
-
-	@Convert lower to uppercase
-	SUB R3, #32
-
-	@Store the new R3 value in R1 at index of R2
-	STRB R3, [R1, R2]
-
-next:
-	@Increase count by one
+	@Otherwise load next byte
 	ADD R2, #1
 
-	@If the byte is not equal to zero, restart loop
 	B count
 
+check_casing:
+	@Check if the string length is odd or even
+	AND R0, R2, #1
+	CMP R0, #0
+
+	@If even convert string to uppercase
+	BEQ convert_upper
+
+	@Otherwise convert to lowercase
+	B convert_lower
+
+convert_upper:
+	MOV R3, #0
+
+convert_upper_loop:
+	@Load each byte of the string
+	LDRB R0, [R1, R3]
+	@Check if null value
+	CMP R0, #0
+	BEQ done
+	@If not, check if the casing is already capitalized
+	CMP R0, #0x61
+    BLT next_upper
+    CMP R0, #0x7A
+    BGT next_upper
+    @If not, convert to lower case
+    SUB R0, #32
+    @Store the byte back into the string
+    STRB R0, [R1, R3]
+next_upper:
+    ADD R3, #1
+    B convert_upper_loop
+
+convert_lower:
+	MOV R3, #0
+
+convert_lower_loop:
+	@Load each byte of the string
+	LDRB R0, [R1, R3]
+	@Check if null value
+	CMP R0, #0
+	BEQ done
+	@If not, check if the casing is already lowercase
+	CMP R0, #0x41
+    BLT next_lower
+    CMP R0, #0x5A
+    BGT next_lower
+    @If not, convert to lower case
+    ADD R0, #32
+    @Store the byte back into the string
+    STRB R0, [R1, R3]
+
+next_lower:
+    ADD R3, #1
+    B convert_lower_loop
 
 done:
     B concatanate
