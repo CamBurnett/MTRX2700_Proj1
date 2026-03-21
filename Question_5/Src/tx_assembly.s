@@ -18,6 +18,10 @@ buffer: .space 32
 .text
 
 main:
+    BL initialise_power
+    BL enable_peripheral_clocks
+    BL enable_uart2
+
     LDR R1, =prefix
     MOV R2, #0
     MOV R3, #0
@@ -147,9 +151,30 @@ checksum_loop:
 store_checksum:
     STRB R3, [R6, R7]
     ADD R7, #1
-
-end:
-	B end
+    MOV R8, #0             @ Index for transmitting loop (wiping previous checksum index)
 
     @ R7 now holds total packet length
     @ Buffer at R6 contains the complete packet
+
+
+@Transmitting the string from UART2 (GPIOA)
+
+tx_uart_loop:
+    LDR R0, =GPIOA
+    LDR R9, [R0, USART_ISR]
+    TST R9, #(1 << 7)      @ Wait until TXE=1
+    BEQ tx_uart_loop
+
+    LDRB R10, [R6, R8]
+    STRB R10, [R0, USART_TDR]
+    MOV R12, #100   @arbitrary short delay
+
+    delay_loop:
+    SUBS R12, R12, #1
+    BNE delay_loop
+
+    ADD R8, #1
+    CMP R8, R7
+    BLT tx_uart_loop
+
+    BX LR                  @ Then needs to reset this code back to the counter to wait until the next increment of time
