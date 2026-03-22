@@ -1,11 +1,32 @@
 @Receiving end code. Here, it grabs the start flag, length and computes for the correct final length, and then computes the checksum
 @We'll neeed to extract the count number from the received data and send it to Elena's code so her lights can display the count.
 @Right now it only reads in the whole package
+.syntax unified
+.thumb
+
+#include "initialise.s"
+
+.global main
+.thumb_func
+
+.data
+buffer: .space 32
+
+.align 2
+
+.type main, %function
+
+.text
+
+main:
+    BL initialise_power
+    BL enable_peripheral_clocks
+    BL enable_uart2
 
 read_loop:
 
 	LDR R6, =incoming_buffer
-	LDR R8, =incoming_counter
+	@LDR R8, =incoming_counter
 
 	@ dereference the memory for the maximum buffer size, store it in R9
 	LDRB R9, [R8]
