@@ -54,11 +54,11 @@ enable_uart3:
     @ Enable UART3 clock (APB1)
     LDR R0, =RCC
     LDR R1, [R0, APB1ENR]
-    ORR R1, R1, 1 << UART_EN
+   @ ORR R1, R1, 1 << UART_EN
     STR R1, [R0, APB1ENR]
 
     @ Set baud rate
-    LDR R0, =UART
+    LDR R0, =UART3
     MOV R1, BAUD_RATE
     STRH R1, [R0, USART_BRR]
 
@@ -70,23 +70,28 @@ enable_uart3:
     BX LR
 
 enable_uart1:
-    LDR R0, =GPIOA          @ change from GPIOC to GPIOA
 
-    @ Alternate function register (AFRH because PA10 is pin 10)
-    LDR R1, [R0, AFRH]
-    BIC R1, R1, #(0xF << 8)  @ clear bits for PA10
-    ORR R1, R1, #(0x7 << 8)  @ set AF7 for UART1_RX
-    STR R1, [R0, AFRH]
+    LDR R0, =GPIOC           @ PC4/PC5
+    @ AFRL
+    LDR R1, [R0, AFRL]
+    BIC R1, R1, #PC4_AFRL_MASK_CLEAR
+    ORR R1, R1, #PC4_AFRL_AF7
+    BIC R1, R1, #PC5_AFRL_MASK_CLEAR
+    ORR R1, R1, #PC5_AFRL_AF7
+    STR R1, [R0, AFRL]
 
-    @ MODER register: alternate function mode
+    @ MODER alternate
     LDR R1, [R0, MODER]
-    BIC R1, R1, #(0x3 << 20)  @ clear mode bits 20-21 for PA10
-    ORR R1, R1, #(0x2 << 20)  @ set AF mode
+    BIC R1, R1, #PC4_MODER_CLEAR_MASK
+    ORR R1, R1, #PC4_MODER_AF_MASK
+    BIC R1, R1, #PC5_MODER_CLEAR_MASK
+    ORR R1, R1, #PC5_MODER_AF_MASK
     STR R1, [R0, MODER]
 
-    @ High speed
+    @ high speed
     LDR R1, [R0, GPIO_OSPEEDR]
-    ORR R1, R1, #(0x3 << 20)  @ high speed
+    ORR R1, R1, #(0x3 << 8)   @ PC4 high speed
+    ORR R1, R1, #(0x3 << 10)  @ PC5 high speed
     STR R1, [R0, GPIO_OSPEEDR]
 
     @ Enable UART1 clock (APB2)
@@ -100,12 +105,60 @@ enable_uart1:
     MOV R1, BAUD_RATE
     STRH R1, [R0, USART_BRR]
 
+    @ Enable UART1, TX only (RX optional)
+    LDR R1, [R0, USART_CR1]
+    ORR R1, R1, (1 << UART_UE | 1 << UART_TE)
+    STR R1, [R0, USART_CR1]
+
+    BX LR
+
+enable_uart2:
+
+    LDR R0, =GPIOA          @ GPIOA for PA2/PA3
+
+    @ Alternate function register (AFRL because PA2 is pin 2)
+    LDR R1, [R0, AFRL]
+    BIC R1, R1, #(0xF << 8)   @ clear bits for PA2 (AFRL[11:8])
+    ORR R1, R1, #(0x7 << 8)   @ set AF7 for USART2_TX
+    STR R1, [R0, AFRL]
+
+    LDR R1, [R0, AFRL]
+    BIC R1, R1, #(0xF << 12)  @ clear bits for PA3 (AFRL[15:12])
+    ORR R1, R1, #(0x7 << 12)  @ set AF7 for USART2_RX
+    STR R1, [R0, AFRL]
+
+    @ MODER register: alternate function mode
+    LDR R1, [R0, MODER]
+    BIC R1, R1, #(0x3 << 4)   @ clear mode bits 4-5 for PA2
+    ORR R1, R1, #(0x2 << 4)   @ set AF mode
+    BIC R1, R1, #(0x3 << 6)   @ clear mode bits 6-7 for PA3
+    ORR R1, R1, #(0x2 << 6)   @ set AF mode
+    STR R1, [R0, MODER]
+
+    @ High speed
+    LDR R1, [R0, GPIO_OSPEEDR]
+    ORR R1, R1, #(0x3 << 4)   @ PA2 high speed
+    ORR R1, R1, #(0x3 << 6)   @ PA3 high speed
+    STR R1, [R0, GPIO_OSPEEDR]
+
+    @ Enable USART2 clock (APB1ENR, bit 17)
+    LDR R0, =RCC
+    LDR R1, [R0, APB1ENR]
+    ORR R1, R1, 1 << 17
+    STR R1, [R0, APB1ENR]
+
+    @ Set baud rate
+    LDR R0, =UART2
+    MOV R1, BAUD_RATE
+    STRH R1, [R0, USART_BRR]
+
     @ Enable UART, TX and RX
     LDR R1, [R0, USART_CR1]
     ORR R1, R1, (1 << UART_UE | 1 << UART_TE | 1 << UART_RE)
     STR R1, [R0, USART_CR1]
 
     BX LR
+
 
 @ set the PLL (clocks are described in page 125 of the large manual)
 change_clock_speed:
