@@ -25,7 +25,8 @@ main:
     LDR R1, =prefix
     MOV R2, #0
     MOV R3, #0
-    @ Counter Value ---------------- TO CHANGE
+    B counter
+
 
     @ Wait for response (ACK or NAK)
 wait_for_response:
@@ -50,7 +51,11 @@ wait_rx:
 
 
     @ Counter Value ---------------- TO CHANGE
+counter:
     MOV R4, #7
+    LDR R1, =prefix
+    MOV R2, #0
+    MOV R3, #0
 
 count_string:
     @ Base length: STX(1) + MsgLen(1) + Prefix(10) + ETX(1) + Checksum(1) = 14
