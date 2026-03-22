@@ -11,6 +11,7 @@
 
 .data
 buffer: .space 32
+incoming_buffer: .space 62
 
 .align 2
 
