@@ -26,6 +26,30 @@ main:
     MOV R2, #0
     MOV R3, #0
     @ Counter Value ---------------- TO CHANGE
+
+    @ Wait for response (ACK or NAK)
+wait_for_response:
+
+    LDR R0, =UART2
+
+wait_rx:
+    LDR R1, [R0, USART_ISR]
+    TST R1, #(1 << 5)       @ RXNE (data received?)
+    BEQ wait_rx             @ wait until byte arrives
+
+    LDRB R2, [R0, USART_RDR]   @ read received byte
+
+    CMP R2, #0x06      @ ACKNOWLEDGED
+    BEQ do_increment
+
+    CMP R2, #0x15      @ NOT ACKNOWLEDGED
+    BEQ do_reset
+
+
+@COUNTER/TIMER LOGIC for Chels
+
+
+    @ Counter Value ---------------- TO CHANGE
     MOV R4, #7
 
 count_string:
@@ -177,4 +201,4 @@ tx_uart_loop:
     CMP R8, R7
     BLT tx_uart_loop
 
-    BX LR                  @ Then needs to reset this code back to the counter to wait until the next increment of time
+    B wait_for_response                  @ Then needs to reset this code back to the counter to wait until the next increment of time
