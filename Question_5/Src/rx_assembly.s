@@ -22,16 +22,9 @@ incoming_buffer: .space 62
 main:
     BL initialise_power
     BL enable_peripheral_clocks
-    BL enable_uart2
+    BL enable_uart3
 
 read_loop:
-
-	LDR R6, =incoming_buffer
-	@LDR R8, =incoming_counter
-
-	@ dereference the memory for the maximum buffer size, store it in R9
-	LDRB R9, [R8]
-
 	@ Keep a pointer that counts how many bytes have been received
 	MOV R8, #0
 
@@ -48,6 +41,8 @@ wait_for_stx:
     LDRB R3, [R0, USART_RDR]  @ read STX
     CMP R3, #0x02              @ STX = 0x02?
     BNE wait_for_stx           @ ignore garbage
+    STRB R3, [R6, R8]
+    ADD R8, #1
 
 wait_for_length:
 
@@ -55,13 +50,12 @@ wait_for_length:
     TST R1, #(1 << 5)   @ RXNE is usually bit 5
     BEQ wait_for_length        @ wait until length byte arrives
     LDRB R7, [R0, USART_RDR]   @ R7 = DATA length
-	STRB R7, [R6, R8]          @ store REAL length
-	ADD R7, R7, #4             @ now convert to TOTAL length
+	STRB R7, [R6, R8]          @ store length
     ADD R8, #1
 
 read_data_loop:
 
-    CMP R8, R7                  @ have we read all bytes? (length includes data only)
+    CMP R8, R7                  @ have we read all bytes? 
     BEQ process_packet          @ done
     LDR R1, [R0, USART_ISR]
     TST R1, #(1 << 5)   @ RXNE is usually bit 5
@@ -76,7 +70,7 @@ process_packet:
     @ buffer now contains full packet (length bytes)
     @ Last byte in buffer = received checksum
     @ Compute checksum over buffer[0..length-2]
-	MOV R10, #1        @ start at LEN (skip STX at index 0)
+	MOV R10, #0   ; include STX
 	MOV R9, #0         @ checksum
 
 checksum_loop2:
@@ -95,14 +89,29 @@ checksum_done:
 	LDRB R3, [R6, R11]   @ load received checksum
     CMP R9, R3
     BEQ send_ack
+
 send_nak:
     MOV R3, #0x15
+
+    nak_tx_wait:
+    LDR R1, [R0, USART_ISR]
+    TST R1, #(1 << 7)   @ TXE
+    BEQ nak_tx_wait
+
     STRB R3, [R0, USART_TDR]
     B end_packet
+
 send_ack:
     MOV R3, #0x06
+    
+    ack_tx_wait:
+    LDR R1, [R0, USART_ISR]
+    TST R1, #(1 << 7)   @ TXE
+    BEQ ack_tx_wait
+
     STRB R3, [R0, USART_TDR]
+    B end_packet
 
 end_packet:
     MOV R8, #0                 @ reset index for next packet
-    B wait_for_stx
+    B read_loop
