@@ -189,7 +189,7 @@ store_checksum:
 @Transmitting the string from UART2 (GPIOA)
 
 tx_uart_loop:
-    LDR R0, =GPIOA
+    LDR R0, =UART2
     LDR R9, [R0, USART_ISR]
     TST R9, #(1 << 7)      @ Wait until TXE=1
     BEQ tx_uart_loop
