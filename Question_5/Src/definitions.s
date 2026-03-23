@@ -39,6 +39,16 @@
 .equ RCC_CR, 0x00 @ control clock register
 .equ RCC_CFGR, 0x04 @ configure clock register
 
+@ USART1
+.equ UART1, 0x40013800 @USART1
+.equ UART1_EN, 14 @ specific bit to enable this UART
+.equ APBENR1, APB2ENR
+.equ MODER_CLEAR_MASK1, (0xF << 8)
+.equ MODER_ALT_MASK1, (0xA << 8)
+.equ AFRREG1, AFRL
+.equ AFR_CLEAR_MASK1, (0xFF << 16)
+.equ AFR_SET_MASK1, (0x77 << 16)
+
 @USART2 Configuration definitions
 .equ UART2, 0x40004400      @ USART2 base
 .equ UART2_EN, 17           @ USART2 enable bit in APB1ENR (bit 17)
@@ -98,3 +108,23 @@
 .equ PA10_MODER_AF_MASK,    (0x2 << 20)
 .equ PA10_AFRH_MASK_CLEAR,  (0xF << 8)
 .equ PA10_AFRH_AF7,         (0x7 << 8)
+
+@ PC4/PC5 for ST-Link VCP
+.equ PC4_MODER_CLEAR_MASK,  (0x3 << 8)   @ clear mode bits 8-9 for PC4
+.equ PC4_MODER_AF_MASK,     (0x2 << 8)   @ set alternate function
+.equ PC5_MODER_CLEAR_MASK,  (0x3 << 10)  @ clear mode bits 10-11 for PC5
+.equ PC5_MODER_AF_MASK,     (0x2 << 10)  @ set alternate function
+
+.equ PC4_AFRL_MASK_CLEAR,   (0xF << 16)  @ clear AFRL[19:16]
+.equ PC4_AFRL_AF7,          (0x7 << 16)  @ AF7
+.equ PC5_AFRL_MASK_CLEAR,   (0xF << 20)  @ clear AFRL[23:20]
+.equ PC5_AFRL_AF7,          (0x7 << 20)  @ AF7
+
+@ transmitting and receiving data
+.equ UART_TXE, 7	@ a new byte is ready to read
+.equ USART_TDR, 0x28	@ a new byte is ready to read
+
+.equ UART_RXNE, 5	@ a new byte is ready to read
+.equ USART_RDR, 0x24	@ a new byte is ready to read
+.equ USART_RQR, 0x18
+.equ UART_RXFRQ, 3	@ a new byte is ready to read

@@ -18,9 +18,9 @@ buffer: .space 32
 .text
 
 main:
-    BL initialise_power
+    BL initialise_discovery_board
     BL enable_peripheral_clocks
-    BL enable_uart2
+    BL enable_uart1
 
     LDR R1, =prefix
     MOV R2, #0
@@ -189,7 +189,7 @@ store_checksum:
 @Transmitting the string from UART2 (GPIOA)
 
 tx_uart_loop:
-    LDR R0, =UART2
+    LDR R0, =UART1
     LDR R9, [R0, USART_ISR]
     TST R9, #(1 << 7)      @ Wait until TXE=1
     BEQ tx_uart_loop

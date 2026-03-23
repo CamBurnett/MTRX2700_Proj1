@@ -46,6 +46,49 @@ enable_timer2_clock:
 	STR R1, [R0, APB1ENR] @enable the timer
 	BX LR @return
 
+enable_uart1:
+
+    LDR R0, =GPIOC           @ PC4/PC5
+    @ AFRL
+    LDR R1, [R0, AFRL]
+    BIC R1, R1, #PC4_AFRL_MASK_CLEAR
+    ORR R1, R1, #PC4_AFRL_AF7
+    BIC R1, R1, #PC5_AFRL_MASK_CLEAR
+    ORR R1, R1, #PC5_AFRL_AF7
+    STR R1, [R0, AFRL]
+
+    @ MODER alternate
+    LDR R1, [R0, MODER]
+    BIC R1, R1, #PC4_MODER_CLEAR_MASK
+    ORR R1, R1, #PC4_MODER_AF_MASK
+    BIC R1, R1, #PC5_MODER_CLEAR_MASK
+    ORR R1, R1, #PC5_MODER_AF_MASK
+    STR R1, [R0, MODER]
+
+    @ high speed
+    LDR R1, [R0, GPIO_OSPEEDR]
+    ORR R1, R1, #(0x3 << 8)   @ PC4 high speed
+    ORR R1, R1, #(0x3 << 10)  @ PC5 high speed
+    STR R1, [R0, GPIO_OSPEEDR]
+
+    @ Enable UART1 clock (APB2)
+    LDR R0, =RCC
+    LDR R1, [R0, APB2ENR]
+    ORR R1, R1, 1 << UART1_EN
+    STR R1, [R0, APB2ENR]
+
+    @ Set baud rate
+    LDR R0, =UART1
+    MOV R1, BAUD_RATE
+    STRH R1, [R0, USART_BRR]
+
+    @ Enable UART1, TX only (RX optional)
+    LDR R1, [R0, USART_CR1]
+    ORR R1, R1, (1 << UART_UE | 1 << UART_TE)
+    STR R1, [R0, USART_CR1]
+
+    BX LR
+
 enable_uart2:
 
     LDR R0, =GPIOA          @ GPIOA for PA2/PA3
