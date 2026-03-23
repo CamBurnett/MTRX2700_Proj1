@@ -59,8 +59,8 @@ all: main-build
 main-build: Question_5.elf secondary-outputs
 
 # Tool invocations
-Question_5.elf Question_5.map: $(OBJS) $(USER_OBJS) C:\Users\cam\STM32CubeIDE\workspace_2.1.0\Question_5\STM32F303VCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Question_5.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\cam\STM32CubeIDE\workspace_2.1.0\Question_5\STM32F303VCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Question_5.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Question_5.elf Question_5.map: $(OBJS) $(USER_OBJS) /Users/elenazengovski/Desktop/MTRX2700/MTRX2700_Proj1/Question_5/STM32F303VCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Question_5.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/Users/elenazengovski/Desktop/MTRX2700/MTRX2700_Proj1/Question_5/STM32F303VCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Question_5.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

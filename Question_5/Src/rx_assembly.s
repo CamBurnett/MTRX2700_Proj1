@@ -23,6 +23,7 @@ main:
     BL initialise_power
     BL enable_peripheral_clocks
     BL enable_uart3
+    BL initialise_discovery_board
 
 read_loop:
 	@ Keep a pointer that counts how many bytes have been received
@@ -88,9 +89,66 @@ checksum_done:
     SUB R11, R7, #1   @ R11 = R7 - 1 (last byte index)
 	LDRB R3, [R6, R11]   @ load received checksum
     CMP R9, R3
-    BEQ send_ack
+    BNE bad_message
+
+    B initialise_counter
+
+
+initialise_counter:
+	MOV R4, #0 @R4 stores the final numeric value
+	MOV R10, #12 @R10 set to the first digit (offsets by 12)
+
+
+extract_number:
+	LDRB R3, [R6, R10]
+	CMP R3, #0x03
+	BEQ display_number
+
+	SUB R3, R3, #0x30 @convert ASCII to numeric
+
+	MOV R2, #10
+	MUL R4, R4, R2
+	ADD R4, R4, R3
+
+	ADD R10, #1
+	B extract_number
+
+display_number:
+	LDR R0, =GPIOE
+    STRB R4, [R0, #ODR + 1]
+    B send_ack
+
+bad_message:
+	BL flash_3
+    B send_nak
+
+flash_3:
+	MOV R11, #6
+    MOV R12, #0x00 @lights off initially
+
+flash_loop:
+	LDR R0, =GPIOE
+    STRB R12, [R0, #ODR + 1]
+    EOR R12, R12, #0xFF @toggle all bits
+
+    BL delay_function
+
+    SUBS R11, R11, #1
+    BNE flash_loop
+
+    BX LR
+
+delay_function:
+	LDR R5, =0x0FFFFF
+
+not_finished:
+	SUBS R5, R5, #1
+    BNE not_finished
+
+    BX LR
 
 send_nak:
+	LDR R0, =UART3
     MOV R3, #0x15
 
     nak_tx_wait:
@@ -102,6 +160,7 @@ send_nak:
     B end_packet
 
 send_ack:
+    LDR R0, =UART3
     MOV R3, #0x06
     
     ack_tx_wait:

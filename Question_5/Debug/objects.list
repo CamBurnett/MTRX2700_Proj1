@@ -1,4 +1,5 @@
-"./Src/assembly.o"
 "./Src/definitions.o"
 "./Src/initialise.o"
+"./Src/rx_assembly.o"
+"./Src/tx_assembly.o"
 "./Startup/startup_stm32f303vctx.o"
