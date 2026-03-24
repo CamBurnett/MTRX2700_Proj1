@@ -40,6 +40,9 @@ High-Level Information about code:
 Instructions for user:
 1. Load an ascii string into MyString
 2. Set a buffer space into buffer to ensure message has enough room for all bytes.
+3. Message will be created into R1
+4. To verify message: Create data in fake_data function, if R3 returns 1, the message was the same as the original message, otherwise it is different
+
 Question 2: Elena Zengovski
 
 Question 3: Angus Malcom
