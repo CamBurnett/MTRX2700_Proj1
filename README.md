@@ -41,12 +41,42 @@ Instructions for user:
 1. Load an ascii string into MyString
 2. Set a buffer space into buffer to ensure message has enough room for all bytes.
 3. Message will be created into R1
-4. To verify message: Create data in fake_data function, if R3 returns 1, the message was the same as the original message, otherwise it is different
+4. To verify message: Create data in fake_data function, if R3 returns 1, the fake message is the same as the original message, otherwise it is different
+
+Details about testing procedure:
+1. Original ascii string is stored in R1, after the buffer
+2. The finshed message in stored in the buffer in R1
+3. The structure of the finished message is: [STX - Message Length - String Body - ETX - Checksum]
+4. The verify loop checksum does not account for the checksum of the transmitted message, as it is not required
 
 Question 2: Elena Zengovski
+High-Level Information about code:
+Instructions for user:
+Details about testing procedure:
 
 Question 3: Angus Malcom
+High-Level Information about code:
+Instructions for user:
+Details about testing procedure:
 
 Question 4: Chelsea Satriavi
+High-Level Information about code:
+Instructions for user:
+Details about testing procedure:
 
 Question 5: All
+Tasks:
+- Cameron: Create Transmitted Message
+- Chelsea: Counter Logic
+- Angus: Transmitting and Receiving Logic
+- Elena: LED Logic
+
+High-Level Information about code:
+1. Initialise "Counter = " prefix with ASCII String Body and buffer length.
+2. Count the length of the string, minus the digits counted: STX(1) + MsgLen(1) + Prefix(10) + ETX(1) + Checksum(1) = 14
+3. Count the amount of digits in the counted total (1 for <10, 2 for 10-100, 3 for >100), and add to total length
+4. Concatanate message in buffer with structure: [STX - Message Length - String Prefix - Count Value - ETX]
+5. Perform a checksum of the message, same process as Question 1. Concatanate Checksum value onto message
+6. 
+Instructions for user:
+Details about testing procedure:
