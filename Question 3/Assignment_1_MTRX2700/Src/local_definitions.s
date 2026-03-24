@@ -26,19 +26,28 @@
 .equ AFR_SET_MASK1, (0x77 << 16)
 
 @ USART3
-.equ UART, 0x40004800 @USART3
-.equ UART_EN, 18 @ specific bit to enable this UART
+.equ UART3, 0x40004800 @USART3
+.equ UART3_EN, 18 @ specific bit to enable this UART
 .equ APBENR, APB1ENR
-.equ MODER_CLEAR_MASK, (0xF << 20)
-.equ MODER_ALT_MASK, (0xA << 20)
+.equ MODER3_CLEAR_MASK, (0xF << 20)
+.equ MODER3_ALT_MASK, (0xA << 20)
 .equ AFRREG, AFRH
 .equ AFR_CLEAR_MASK, (0xFF << 8)
 .equ AFR_SET_MASK, (0x77 << 8)
 
+@USART2
+.equ UART2, 0x40004400      @ USART2 base
+.equ UART2_EN, 17           @ USART2 enable bit in APB1ENR (bit 17)
+.equ APBENR, APB1ENR        @ same APB1 peripheral enable register
+.equ MODER2_CLEAR_MASK, (0xF << 4)   @ PA2/PA3 alternate function clear (bits 4-7)
+.equ MODER2_ALT_MASK,   (0xA << 4)   @ PA2/PA3 alternate function mode
+.equ AFRREG, AFRL             @ AFRL for PA2/PA3 (pins 0-7)
+
+
 @ BAUD RATE
-.equ BAUD_RATE, 0x43
+@.equ BAUD_RATE, 0x43
 @.equ BAUD_RATE, 833 @ 9600 Baud
-@.equ BAUD_RATE, 208 @ 38400 Baud
+.equ BAUD_RATE, 208 @ 38400 Baud
 
 
 @ register addresses and offsets for general UARTs
@@ -54,7 +63,7 @@
 .equ UART_FE, 1 @ Frame error
 
 .equ UART_ORECF, 3 @ Overrun clear flag
-.equ UART_FECF, 3 @ Frame error clear flag
+.equ UART_FECF, 1 @ Frame error clear flag
 
 
 @ different UARTs use different GPIOs for the pins
@@ -112,5 +121,16 @@
 
 @ LED pin
 .equ LED_PIN, 8          @ PE8
+
+@ PC4/PC5 for ST-Link VCP
+.equ PC4_MODER_CLEAR_MASK,  (0x3 << 8)   @ clear mode bits 8-9 for PC4
+.equ PC4_MODER_AF_MASK,     (0x2 << 8)   @ set alternate function
+.equ PC5_MODER_CLEAR_MASK,  (0x3 << 10)  @ clear mode bits 10-11 for PC5
+.equ PC5_MODER_AF_MASK,     (0x2 << 10)  @ set alternate function
+
+.equ PC4_AFRL_MASK_CLEAR,   (0xF << 16)  @ clear AFRL[19:16]
+.equ PC4_AFRL_AF7,          (0x7 << 16)  @ AF7
+.equ PC5_AFRL_MASK_CLEAR,   (0xF << 20)  @ clear AFRL[23:20]
+.equ PC5_AFRL_AF7,          (0x7 << 20)  @ AF7
 
 

@@ -23,6 +23,7 @@ main:
     BL enable_peripheral_clocks
     BL initialise_power
     BL enable_uart3
+    BL initialise_discovery_board
 
 read_loop:
 	@ Keep a pointer that counts how many bytes have been received
@@ -88,9 +89,66 @@ checksum_done:
     SUB R11, R7, #1   @ R11 = R7 - 1 (last byte index)
 	LDRB R3, [R6, R11]   @ load received checksum
     CMP R9, R3
-    BEQ send_ack
+    BNE bad_message
+
+    B initialise_counter
+
+
+initialise_counter:
+	MOV R4, #0 @R4 stores the final numeric value and initialise to 0
+	MOV R10, #12 @R10 set to the first digit (offsets by 12)
+
+
+extract_number:
+	LDRB R3, [R6, R10]	@load the next ASCII character from the buffer into R3
+	CMP R3, #0x03	@Compare with 0x03 (end of the number)
+	BEQ display_number @if ETX, display result
+
+	SUB R3, R3, #0x30 @convert ASCII to numeric
+
+	MOV R2, #10	 @Load 10 to R2 to shift decimal place
+	MUL R4, R4, R2	@Multiply current value by 10
+	ADD R4, R4, R3	@Add new digit to number
+
+	ADD R10, #1	@Move to next character in buffer
+	B extract_number	@repeat loop for next digit
+
+display_number:
+	LDR R0, =GPIOE	@Load base address of GPIOE
+    STRB R4, [R0, #ODR + 1]	@Output lower 8 bits of R4 to LEDs
+    B send_ack	@Send ACK for valid message received
+
+bad_message:
+	BL flash_3	@For errors call the function to flash LEDs 3 times
+    B send_nak	@Send NAK for malformed messages
+
+flash_3:
+	MOV R11, #6	@Set loop counter to 6 for 3 flashes
+    MOV R12, #0x00 @lights off initially
+
+flash_loop:
+	LDR R0, =GPIOE	@Load GPIOE base address
+    STRB R12, [R0, #ODR + 1]	@Load current on or off to LEDs
+    EOR R12, R12, #0xFF @toggle all bits
+
+    BL delay_function	@Delay to create flash
+
+    SUBS R11, R11, #1	@Decrease flash counter
+    BNE flash_loop	@Repeat 6 times
+
+    BX LR
+
+delay_function:
+	LDR R5, =0x0FFFFF	@load value to create delay
+
+not_finished:
+	SUBS R5, R5, #1	@Decrease delay counter
+    BNE not_finished	@Continue looping until counter reaches zero
+
+    BX LR
 
 send_nak:
+	LDR R0, =UART3
     MOV R3, #0x15
 
     nak_tx_wait:
@@ -102,6 +160,7 @@ send_nak:
     B end_packet
 
 send_ack:
+    LDR R0, =UART3
     MOV R3, #0x06
     
     ack_tx_wait:

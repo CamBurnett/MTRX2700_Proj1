@@ -5,19 +5,22 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 S_SRCS += \
-../Src/assembly.s \
 ../Src/definitions.s \
-../Src/initialise.s 
+../Src/initialise.s \
+../Src/rx_assembly.s \
+../Src/tx_assembly.s 
 
 OBJS += \
-./Src/assembly.o \
 ./Src/definitions.o \
-./Src/initialise.o 
+./Src/initialise.o \
+./Src/rx_assembly.o \
+./Src/tx_assembly.o 
 
 S_DEPS += \
-./Src/assembly.d \
 ./Src/definitions.d \
-./Src/initialise.d 
+./Src/initialise.d \
+./Src/rx_assembly.d \
+./Src/tx_assembly.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -27,7 +30,7 @@ Src/%.o: ../Src/%.s Src/subdir.mk
 clean: clean-Src
 
 clean-Src:
-	-$(RM) ./Src/assembly.d ./Src/assembly.o ./Src/definitions.d ./Src/definitions.o ./Src/initialise.d ./Src/initialise.o
+	-$(RM) ./Src/definitions.d ./Src/definitions.o ./Src/initialise.d ./Src/initialise.o ./Src/rx_assembly.d ./Src/rx_assembly.o ./Src/tx_assembly.d ./Src/tx_assembly.o
 
 .PHONY: clean-Src
 
