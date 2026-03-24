@@ -29,6 +29,18 @@ initialise_discovery_board:
 	ORR R1, 1 << SYSCFGEN @ apply the bit mask to allow clock configuration
 	STR R1, [R0, #APB2ENR]
 
+    		@FOR LED
+	LDR R0, =GPIOE
+	LDR R1, [R0, #MODER]
+
+	LDR R2, =0xFFFF0000   @ mask for PE8–PE15
+	BIC R1, R1, R2        @ clear bits
+
+	LDR R2, =0x55550000   @ set output mode (01)
+	ORR R1, R1, R2
+
+	STR R1, [R0, #MODER]
+
 	BX LR @ return
 
 enable_peripheral_clocks:
@@ -45,6 +57,8 @@ enable_timer2_clock:
 	ORR R1, 1 << TIM2EN @1st bit is where timer2 gets enabled
 	STR R1, [R0, APB1ENR] @enable the timer
 	BX LR @return
+
+
 
 enable_uart1:
 

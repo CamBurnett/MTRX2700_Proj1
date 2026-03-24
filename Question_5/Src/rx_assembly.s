@@ -20,8 +20,8 @@ incoming_buffer: .space 62
 .text
 
 main:
-    BL initialise_power
     BL enable_peripheral_clocks
+    BL initialise_power
     BL enable_uart3
 
 read_loop:

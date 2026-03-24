@@ -18,8 +18,8 @@ buffer: .space 32
 .text
 
 main:
-    BL initialise_discovery_board
     BL enable_peripheral_clocks
+    BL initialise_discovery_board
     BL enable_uart1
 
     LDR R1, =prefix
@@ -31,7 +31,7 @@ main:
     @ Wait for response (ACK or NAK)
 wait_for_response:
 
-    LDR R0, =UART2
+    LDR R0, =UART1
 
 wait_rx:
     LDR R1, [R0, USART_ISR]

@@ -95,6 +95,7 @@
 .equ PLLEN, 16 @ enable the PLL clock
 .equ PLLSRC, 16
 .equ USBPRE, 22 @ with PLL active, this must be set for the USB
+.equ PUPDR, 0x0C    @ GPIO pull-up/pull-down register
 
 .equ PWREN, 28
 .equ SYSCFGEN, 0
