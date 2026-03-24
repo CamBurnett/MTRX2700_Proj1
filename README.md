@@ -12,8 +12,8 @@ Elena Zengovski
 
 Tasks:
 
-Question 1: Cameron Burnett\\
-High-Level Information about code:\\
+Question 1: Cameron Burnett\n
+High-Level Information about code:\n
 **Transmitting Message:**
 1. Load in a string
 2. Count number of characters in string
