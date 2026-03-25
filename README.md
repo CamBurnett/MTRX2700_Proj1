@@ -50,11 +50,14 @@ Details about testing procedure:
 4. The verify loop checksum does not account for the checksum of the transmitted message, as it is not required
 
 Question 2: Elena Zengovski
-High-Level Information about code:
-1. the program can be set to either a button mode or automatic mode to increase or decrease the counter
-2. If in button press mode, the program checks if the button is pressed
-3. with each press, the counter goes up until it reaches its limit at 0xff and then back down to its limit 0x00
-4. In automatic mode, the counter updates continuously 
+This program implements a counter that increases and decreases with either a button press or automatically. The program is broken into modules with hardware initialisation, control logic, input handling, and timing.
+1. The initialisation of the program occurs first where clocks are enabled and GPIO pins are configured
+2. In the main program loop, the program checks for either a button mode or automatic mode to increase or decrease the counter
+3. For input handling, if in button press mode, the program checks for a valid press with an additional release check to ensure that one press corresponds to one increment
+4. with each press, the counter module updates the value in R4 and goes up until it reaches its limit at 0xff and then back down to its limit 0x00
+5. The output module displays the binary value on the LEDs
+6. The delay module is responsible for controlling the timing in automatic mode and debouncing the button
+7. In automatic mode, the counter updates continuously 
 
 Instructions for user:
 1. By default, the program starts in button mode (R7=0), this can be changed by changing R7 to 1
