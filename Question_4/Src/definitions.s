@@ -16,6 +16,8 @@
 .equ TIM_CNT, 0x24  @the actual counter location
 .equ TIM_PSC, 0x28 @prescaler value
 .equ TIM_ARR, 0x2C @the register for the auto-reload
+.equ TIM_SR, 0x10 @status register, telling if overflow has happened
+.equ TIM_EGR, 0x14 @event generation register, event trigger
 
 @AHB registers for enabling clocks
 .equ AHBENR, 0x14 @enable peripherals

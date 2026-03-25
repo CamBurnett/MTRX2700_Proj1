@@ -16,18 +16,23 @@ main:
 	BL initialise_discovery_board @initialising the board
 	BL enable_timer2_clock @start timer2 such that delay functions can be used
 
+	/*
 	@initialising LEDs
-	@LDR R7, =0b10110111 @loading register with which LEDs are turning on
-	@LDR R0, =GPIOE @loading register with address of GPIOE
-	@STRB R7, [R0, #ODR + 1] @loading the LED 'on' into GPIOE_ODR
+	LDR R7, =0b10110111 @loading register with which LEDs are turning on
+	LDR R0, =GPIOE @loading register with address of GPIOE
+	STRB R7, [R0, #ODR + 1] @loading the LED 'on' into GPIOE_ODR
 
 	@BL prescaler @starting the prescaler
-	@BL timer @branching into delay function using timer
+	BL timer @branching into delay function using timer
+	@BL prescaler_prescaler
+	@BL delay_prescaler
+
 
 	@turning off LEDs
-	@LDR R7, =0b00000000 @loading register with which LEDs are turning off
-	@LDR R0, =GPIOE @loading register with address of GPIOE
-	@STRB R7, [R0, #ODR + 1] @loading the LED 'off' into GPIOE_ODR
+	LDR R7, =0b00000000 @loading register with which LEDs are turning off
+	LDR R0, =GPIOE @loading register with address of GPIOE
+	STRB R7, [R0, #ODR + 1] @loading the LED 'off' into GPIOE_ODR */
+
 
 	LDR R0, =TIM2
 
@@ -63,27 +68,18 @@ main_loop:
 	LDR R0, =TIM2
 	LDR R1, [R0, #TIM_CNT]      @ current time
 
-	@ -----------------------------
-	@ LED1 check
-	@ if current time < next LED1 time, skip
-	@ else toggle LED1 and schedule next time
-	@ -----------------------------
+	@comparing values to check whether the time has been reched
 	CMP R1, R6
 	BLT skip_led1
 
 	LDR R0, =GPIOE
 	LDRB R2, [R0, #ODR + 1]
-	EOR R2, R2, #(1 << 0)       @ toggle PE8
+	EOR R2, R2, #(1 << 0)       @ toggle LED1
 	STRB R2, [R0, #ODR + 1]
 
 	ADD R6, R6, R4              @ next LED1 toggle time
 
 skip_led1:
-	@ -----------------------------
-	@ LED2 check
-	@ if current time < next LED2 time, skip
-	@ else toggle LED2 and schedule next time
-	@ -----------------------------
 	LDR R0, =TIM2
 	LDR R1, [R0, #TIM_CNT]      @ read again just to be safe
 
@@ -92,7 +88,7 @@ skip_led1:
 
 	LDR R0, =GPIOE
 	LDRB R2, [R0, #ODR + 1]
-	EOR R2, R2, #(1 << 1)       @ toggle PE9
+	EOR R2, R2, #(1 << 1)       @ toggle LED2
 	STRB R2, [R0, #ODR + 1]
 
 	ADD R7, R7, R5              @ next LED2 toggle time
@@ -119,6 +115,7 @@ timer:
 	LDR R8, =50000000 @setting value for when overflow
 	STR R8, [R1, TIM_ARR] @set the ARR register
 
+@delay loop using time passed through register R1
 delay:
 	@picking delay length
 	LDR R3, =50000000 @picking max time to go
@@ -132,25 +129,65 @@ delay_loop:
 
 	BX LR @back to preceding function
 
-prescaler:
+@using prescaler
+delay_prescaler:
+
+	@initialising timer
+	LDR R0, =TIM2 @initialising timer 2
+
+	MOV R2, #0 @putting 0 in register R2
+    STR R2, [R0, #TIM_CNT]   @ reset counter
+
+    @ clear update flag first check if the registers here are correct
+	LDR R2, [R0, #TIM_SR]
+	BIC R2, R2, #1
+	STR R2, [R0, #TIM_SR]
+
+	MOV R2, #1 @putting 1 in register R2
+	STR R2, [R0, #TIM_CR1] @storing counting timer
+
+	LDR R3, =5 @picking max time to go for 5 seconds
+	@LDR R3, = 3600 @picking max time to go for an hour
+
+delay_loop_prescaler:
+	@BLT delay_loop
+	LDR R2, [R0, #TIM_SR]       @ read status
+    TST R2, #1                  @ test UIF bit
+    BEQ delay_loop_prescaler            @ stay until UIF = 1
+
+    LDR R2, [R0, #TIM_SR]       @ clear UIF after delay
+    BIC R2, R2, #1
+    STR R2, [R0, #TIM_SR]
+
+    SUBS R3, R3, #1
+	BNE delay_loop_prescaler
+
+	BX LR
+
+@creating prescaler
+prescaler_prescaler:
 	@storing a value for the prescaler
 	LDR R0, =TIM2 @load the base address for the timer
-	MOV R1, #0x02 @putting the prescaler value into R1
+	LDR R1, = 7999 @putting the prescaler value into R1 for 1 second
+	@LDR R1, = 7 @putting prescaler value into R1 for 1 microsecond
 	STR R1, [R0, TIM_PSC] @setting prescaler register
 
-trigger_prescaler:
+	@setting ARPE = 1
+	LDR R1, [R0, #TIM_CR1]
+	ORR R1, R1, #(1 << 7)
+	STR R1, [R0, #TIM_CR1]
+
+trigger_prescaler_prescaler:
 	LDR R0, =TIM2 @load the base address for the timer
 
-	LDR R1, =0x1 @setting value for when overflow
+	LDR R1, =999 @setting value for when overflow
 	STR R1, [R0, TIM_ARR] @set the ARR register
+
+	MOV R1, #1
+	STR R1, [R0, #TIM_EGR]   @ force update event
 
 	MOV R2, #0 @loading value to R2
 	STR R2, [R0, #TIM_CNT] @resetting value of timer to 0
 
-	NOP @stalling for time
-	NOP @stalling for time
-
-	LDR R1, =0xffffffff @ set the ARR back to the default value
-	STR R1, [R0, TIM_ARR] @ set the ARR register
-
 	BX LR @back to prescaler
+
