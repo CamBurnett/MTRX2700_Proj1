@@ -1,6 +1,7 @@
 # MTRX2700_Proj1
 Project 1
 
+
 People:
 Chelsea Satriavi
 
@@ -200,3 +201,8 @@ High-Level Information about code:
 6. 
 Instructions for user:
 Details about testing procedure:
+
+
+<img width="408" height="461" alt="block diagram" src="https://github.com/user-attachments/assets/ed0dd1fd-3cf9-448d-93c2-274f74ec0861" />
+
+
