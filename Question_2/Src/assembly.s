@@ -22,7 +22,7 @@ main:
 
 	MOV R4, #0 @setting the LED counter to 0 using R4
 	MOV R5, #0 @setting the direction of the counter to 0 (up)
-	MOV R7, #0 @setting R7 to 0 (button) or 1 (automatic) to indicate mode
+	MOV R7, #1 @setting R7 to 0 (button) or 1 (automatic) to indicate mode
 
 program_loop:
 	CMP R7, #0 @comparing R7 to 0 to check mode

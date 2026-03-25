@@ -126,8 +126,8 @@ main:
  80001f2:	f04f 0400 	mov.w	r4, #0
 	MOV R5, #0 @setting the direction of the counter to 0 (up)
  80001f6:	f04f 0500 	mov.w	r5, #0
-	MOV R7, #0 @setting R7 to 0 (button) or 1 (automatic) to indicate mode
- 80001fa:	f04f 0700 	mov.w	r7, #0
+	MOV R7, #1 @setting R7 to 0 (button) or 1 (automatic) to indicate mode
+ 80001fa:	f04f 0701 	mov.w	r7, #1
 
 080001fe <program_loop>:
 
@@ -140,110 +140,110 @@ program_loop:
 08000202 <automatic>:
 
 automatic:
-	BL delay_function
+	BL delay_function	@delay to control speed of counting
  8000202:	f000 f827 	bl	8000254 <delay_function>
-    B counter
+    B counter	@branch to counter update function
  8000206:	e00d      	b.n	8000224 <counter>
 
 08000208 <button>:
 
 button:
 check_press:
-	LDR R0, =GPIOA
+	LDR R0, =GPIOA	@load the base address of GPIOA into R0 (input button port)
  8000208:	f04f 4090 	mov.w	r0, #1207959552	@ 0x48000000
-	LDR R1, [R0, #IDR]
+	LDR R1, [R0, #IDR] @read the GPIOA input data register into R1
  800020c:	6901      	ldr	r1, [r0, #16]
-	ANDS R1, #0x01
+	ANDS R1, #0x01	@mask bits
  800020e:	f011 0101 	ands.w	r1, r1, #1
-	BEQ check_press
+	BEQ check_press @if button not pressed loop again
  8000212:	d0f9      	beq.n	8000208 <button>
 
-	BL delay_function
+	BL delay_function	@delay for debouncing button press
  8000214:	f000 f81e 	bl	8000254 <delay_function>
 
 	LDR R0, =GPIOA
  8000218:	f04f 4090 	mov.w	r0, #1207959552	@ 0x48000000
 	LDR R1, [R0, #IDR]
  800021c:	6901      	ldr	r1, [r0, #16]
-	ANDS R1, #0x01
+	ANDS R1, #0x01	@mask bits
  800021e:	f011 0101 	ands.w	r1, r1, #1
-	BEQ check_press
+	BEQ check_press	@when button no longer pressed
  8000222:	d0f1      	beq.n	8000208 <button>
 
 08000224 <counter>:
 
 counter:
-	CMP R5, #1
+	CMP R5, #1 @compare direction flag to 1
  8000224:	2d01      	cmp	r5, #1
-	BEQ go_down
+	BEQ go_down @if 1, count down logic starts
  8000226:	d005      	beq.n	8000234 <go_down>
 
 08000228 <go_up>:
 
 go_up:
-	ADDS R4, R4, #1
+	ADDS R4, R4, #1	@increment the counter value by 1
  8000228:	3401      	adds	r4, #1
-	CMP R4, #0xFF
+	CMP R4, #0xFF	@check if all LEDs on
  800022a:	2cff      	cmp	r4, #255	@ 0xff
-	BNE led_display
+	BNE led_display	@if all not on, branch to display value
  800022c:	d107      	bne.n	800023e <led_display>
-	MOV R5, #1
+	MOV R5, #1	@if all are on, change to count down
  800022e:	f04f 0501 	mov.w	r5, #1
-	B led_display
+	B led_display	@branch to function that updates LEDs
  8000232:	e004      	b.n	800023e <led_display>
 
 08000234 <go_down>:
 
 go_down:
-	SUBS R4, R4, #1
+	SUBS R4, R4, #1	@decrease the counter value by 1
  8000234:	3c01      	subs	r4, #1
-	CMP R4, #0
+	CMP R4, #0	@check if all LEDs off
  8000236:	2c00      	cmp	r4, #0
-	BNE led_display
+	BNE led_display	@if all not off, branch to display value
  8000238:	d101      	bne.n	800023e <led_display>
-	MOV R5, #0
+	MOV R5, #0	@if all are off, change to count up
  800023a:	f04f 0500 	mov.w	r5, #0
 
 0800023e <led_display>:
 
 led_display:
-	LDR R0, =GPIOE
+	LDR R0, =GPIOE	@load the base address of GPIOE into R0
  800023e:	4808      	ldr	r0, [pc, #32]	@ (8000260 <debounce+0xa>)
-	STRB R4, [R0, #ODR + 1]
+	STRB R4, [R0, #ODR + 1]	@store low byte of R4 to PE8–PE15
  8000240:	7544      	strb	r4, [r0, #21]
 
-	CMP R7, #0
+	CMP R7, #0	@compare mode flag to 0
  8000242:	2f00      	cmp	r7, #0
-	BNE program_loop
+	BNE program_loop @if automatic, skip button press check
  8000244:	d1db      	bne.n	80001fe <program_loop>
 
 08000246 <button_press>:
 
 button_press:
-	LDR R0, =GPIOA
+	LDR R0, =GPIOA	@load the base address of GPIOA into R0
  8000246:	f04f 4090 	mov.w	r0, #1207959552	@ 0x48000000
-    LDR R1, [R0, #IDR]
+    LDR R1, [R0, #IDR]	@read the GPIOA input data register into R1
  800024a:	6901      	ldr	r1, [r0, #16]
-    ANDS R1, R1, #0x01
+    ANDS R1, R1, #0x01 @mask bits
  800024c:	f011 0101 	ands.w	r1, r1, #1
-    BNE button_press
+    BNE button_press	@if button still pressed program pauses
  8000250:	d1f9      	bne.n	8000246 <button_press>
 
-	B program_loop
+	B program_loop	@button released and goes back to start
  8000252:	e7d4      	b.n	80001fe <program_loop>
 
 08000254 <delay_function>:
 
 delay_function:
-    LDR R6, =0x0001FFFF
+    LDR R6, =0x0001FFFF @delay loop count
  8000254:	4e03      	ldr	r6, [pc, #12]	@ (8000264 <debounce+0xe>)
 
 08000256 <debounce>:
 
 debounce:
-    SUBS R6, R6, #1
+    SUBS R6, R6, #1	@subtract from delay loop count
  8000256:	3e01      	subs	r6, #1
-    BNE debounce
+    BNE debounce	@continue looping until 0
  8000258:	d1fd      	bne.n	8000256 <debounce>
 
     BX LR
@@ -252,7 +252,7 @@ debounce:
  800025c:	40021000 	.word	0x40021000
 	LDR R0, =GPIOE 	@ load the address of the GPIOE register into R0
  8000260:	48001000 	.word	0x48001000
-    LDR R6, =0x0001FFFF
+    LDR R6, =0x0001FFFF @delay loop count
  8000264:	0001ffff 	.word	0x0001ffff
 
 08000268 <Reset_Handler>:
