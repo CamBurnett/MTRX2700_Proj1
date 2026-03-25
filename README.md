@@ -84,7 +84,20 @@ High-Level Information about code:
 11. Reply with an acknowledgement of message 
 
 Instructions for user:
+1. Load an ASCII string into tx_string
+2. Set a buffer space into buffer to ensure the message has enough room for all bytes
+3. Press the user button (PA0) to begin transmission
+4. The message packet will be built into the buffer and transmitted over UART1 repeatedly
+5. The packet format is: [STX] [Length] [Data] [ETX] [Checksum], where any lowercase letters are converted to uppercase
+
 Details about testing procedure:
+1. Original ASCII string is stored in tx_string in the data section
+2. The finished message is stored in the buffer, pointed to by R1
+3. The structure of the finished message is: [STX - Message Length - String Body - ETX - Checksum]
+4. Any lowercase letters in the source string are converted to uppercase during the copy into the buffer
+5. The checksum is computed by XORing all bytes in the buffer from STX through to ETX
+6. The message is transmitted byte by byte over UART1, verified by checking the TXE flag before each send
+7. After transmission completes, the function returns and is called again in a loop, continuously retransmitting the same packet
 
 Question 4: Chelsea Satriavi
 High-Level Information about code:
