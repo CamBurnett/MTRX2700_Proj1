@@ -1,6 +1,6 @@
-Meeting Minutes: Week 5  
+Meeting Minutes: Week 4    
 Location: Mechatronics Lab   
-Date: Week 5  
+Date: Week 4    
 Time: 15-17.00  
 Attendees: Cam, Angus, Elena, Chelsea   
 Apologies: NA   
