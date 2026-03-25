@@ -56,6 +56,12 @@ Details about testing procedure:
 
 Question 3: Angus Malcom
 High-Level Information about code:
+
+1. Allocate a buffer of space for string
+2. Initialise the Board Clocks, Peripherals and UART configurations for Receive and Transmit pins and Button configuation
+3. Wait until the user presses the button to continue further
+4. First, append the STX 
+
 Instructions for user:
 Details about testing procedure:
 
