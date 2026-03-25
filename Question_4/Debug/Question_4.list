@@ -5,45 +5,45 @@ Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
   0 .isr_vector   00000194  08000000  08000000  00001000  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  1 .text         000001c4  08000194  08000194  00001194  2**2
+  1 .text         00000230  08000194  08000194  00001194  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       00000000  08000358  08000360  00001360  2**0
+  2 .rodata       00000000  080003c4  080003cc  000013cc  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  3 .ARM.extab    00000000  08000358  08000358  00001360  2**0
+  3 .ARM.extab    00000000  080003c4  080003c4  000013cc  2**0
                   CONTENTS, READONLY
-  4 .ARM          00000000  08000358  08000358  00001360  2**0
+  4 .ARM          00000000  080003c4  080003c4  000013cc  2**0
                   CONTENTS, READONLY
-  5 .preinit_array 00000000  08000358  08000360  00001360  2**0
+  5 .preinit_array 00000000  080003c4  080003cc  000013cc  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .init_array   00000004  08000358  08000358  00001358  2**2
+  6 .init_array   00000004  080003c4  080003c4  000013c4  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  7 .fini_array   00000004  0800035c  0800035c  0000135c  2**2
+  7 .fini_array   00000004  080003c8  080003c8  000013c8  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  8 .data         00000000  20000000  20000000  00001360  2**0
+  8 .data         00000000  20000000  20000000  000013cc  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .ccmram       00000000  10000000  10000000  00001360  2**0
+  9 .ccmram       00000000  10000000  10000000  000013cc  2**0
                   CONTENTS
  10 .bss          0000001c  20000000  20000000  00002000  2**2
                   ALLOC
  11 ._user_heap_stack 00000604  2000001c  2000001c  00002000  2**0
                   ALLOC
- 12 .ARM.attributes 00000030  00000000  00000000  00001360  2**0
+ 12 .ARM.attributes 00000030  00000000  00000000  000013cc  2**0
                   CONTENTS, READONLY
- 13 .debug_line   00000121  00000000  00000000  00001390  2**0
+ 13 .debug_line   00000148  00000000  00000000  000013fc  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_line_str 0000008b  00000000  00000000  000014b1  2**0
+ 14 .debug_line_str 0000008b  00000000  00000000  00001544  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_info   00000055  00000000  00000000  0000153c  2**0
+ 15 .debug_info   00000055  00000000  00000000  000015cf  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_abbrev 00000038  00000000  00000000  00001591  2**0
+ 16 .debug_abbrev 00000038  00000000  00000000  00001624  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_aranges 00000048  00000000  00000000  000015d0  2**3
+ 17 .debug_aranges 00000048  00000000  00000000  00001660  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    0000009c  00000000  00000000  00001618  2**0
+ 18 .debug_str    0000009c  00000000  00000000  000016a8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_rnglists 00000019  00000000  00000000  000016b4  2**0
+ 19 .debug_rnglists 00000019  00000000  00000000  00001744  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .debug_frame  0000002c  00000000  00000000  000016d0  2**2
+ 20 .debug_frame  0000002c  00000000  00000000  00001760  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -62,7 +62,7 @@ Disassembly of section .text:
  80001aa:	bd10      	pop	{r4, pc}
  80001ac:	20000000 	.word	0x20000000
  80001b0:	00000000 	.word	0x00000000
- 80001b4:	08000340 	.word	0x08000340
+ 80001b4:	080003ac 	.word	0x080003ac
 
 080001b8 <frame_dummy>:
  80001b8:	b508      	push	{r3, lr}
@@ -74,7 +74,7 @@ Disassembly of section .text:
  80001c6:	bd08      	pop	{r3, pc}
  80001c8:	00000000 	.word	0x00000000
  80001cc:	20000004 	.word	0x20000004
- 80001d0:	08000340 	.word	0x08000340
+ 80001d0:	080003ac 	.word	0x080003ac
 
 080001d4 <initialise_discovery_board>:
 
@@ -83,7 +83,7 @@ Disassembly of section .text:
 
 initialise_discovery_board:
 	LDR R0, =GPIOE
- 80001d4:	4830      	ldr	r0, [pc, #192]	@ (8000298 <trigger_prescaler_prescaler+0x1a>)
+ 80001d4:	4849      	ldr	r0, [pc, #292]	@ (80002fc <trigger_prescaler_prescaler+0x1a>)
 	LDR R1, =0x5555
  80001d6:	f245 5155 	movw	r1, #21845	@ 0x5555
 	STRH R1, [R0, #MODER + 2]
@@ -95,7 +95,7 @@ initialise_discovery_board:
 
 enable_peripheral_clocks:
 	LDR R0, =RCC @load the address of the RCC
- 80001de:	482f      	ldr	r0, [pc, #188]	@ (800029c <trigger_prescaler_prescaler+0x1e>)
+ 80001de:	4848      	ldr	r0, [pc, #288]	@ (8000300 <trigger_prescaler_prescaler+0x1e>)
 	@#AHBENR is the address offset, and R0 is where the RCC register address is placed
 	LDR R1, [R0, #AHBENR] @load the current value of the peripheral clock registers
  80001e0:	6941      	ldr	r1, [r0, #20]
@@ -110,7 +110,7 @@ enable_peripheral_clocks:
 
 enable_timer2_clock:
 	LDR R0, =RCC @load the address of the RCC
- 80001ea:	482c      	ldr	r0, [pc, #176]	@ (800029c <trigger_prescaler_prescaler+0x1e>)
+ 80001ea:	4845      	ldr	r0, [pc, #276]	@ (8000300 <trigger_prescaler_prescaler+0x1e>)
 	LDR R1, [R0, APB1ENR] @load the currenty value of the peripheral clock registers using bus 1
  80001ec:	69c1      	ldr	r1, [r0, #28]
 	ORR R1, 1 << TIM2EN @1st bit is where timer2 gets enabled
@@ -132,347 +132,461 @@ main:
  80001fa:	f7ff ffeb 	bl	80001d4 <initialise_discovery_board>
 	BL enable_timer2_clock @start timer2 such that delay functions can be used
  80001fe:	f7ff fff4 	bl	80001ea <enable_timer2_clock>
-
-	@initialising LEDs
-	LDR R7, =0b10110111 @loading register with which LEDs are turning on
- 8000202:	f04f 07b7 	mov.w	r7, #183	@ 0xb7
-	LDR R0, =GPIOE @loading register with address of GPIOE
- 8000206:	4824      	ldr	r0, [pc, #144]	@ (8000298 <trigger_prescaler_prescaler+0x1a>)
-	STRB R7, [R0, #ODR + 1] @loading the LED 'on' into GPIOE_ODR
- 8000208:	7547      	strb	r7, [r0, #21]
-
-	@BL prescaler @starting the prescaler
-	BL timer @branching into delay function using timer
- 800020a:	f000 f805 	bl	8000218 <timer>
-	@BL prescaler_prescaler
-	@BL delay_prescaler
-
-
-	@turning off LEDs
 	LDR R7, =0b00000000 @loading register with which LEDs are turning off
- 800020e:	f04f 0700 	mov.w	r7, #0
 	LDR R0, =GPIOE @loading register with address of GPIOE
- 8000212:	4821      	ldr	r0, [pc, #132]	@ (8000298 <trigger_prescaler_prescaler+0x1a>)
-	STRB R7, [R0, #ODR + 1] @loading the LED 'off' into GPIOE_ODR
- 8000214:	7547      	strb	r7, [r0, #21]
+	STRB R7, [R0, #ODR + 1] @loading the LED 'off' into GPIOE_ODR */
 
-08000216 <stop>:
+
+	LDR R0, =TIM2
+ 8000202:	f04f 4080 	mov.w	r0, #1073741824	@ 0x40000000
+
+	@ prescaler: adjust this if needed for your board clock
+	@ if TIM2 clock = 8 MHz, PSC = 7 gives 1 tick = 1 us
+	MOV R1, #7
+ 8000206:	f04f 0107 	mov.w	r1, #7
+	STR R1, [R0, #TIM_PSC]
+ 800020a:	6281      	str	r1, [r0, #40]	@ 0x28
+
+	@ load prescaler
+	BL trigger_prescaler
+ 800020c:	f000 f839 	bl	8000282 <trigger_prescaler>
+
+	@ reset counter
+	MOV R1, #0
+ 8000210:	f04f 0100 	mov.w	r1, #0
+	STR R1, [R0, #TIM_CNT]
+ 8000214:	6241      	str	r1, [r0, #36]	@ 0x24
+
+	@ start timer
+	MOV R1, #1
+ 8000216:	f04f 0101 	mov.w	r1, #1
+	STR R1, [R0, #TIM_CR1]
+ 800021a:	6001      	str	r1, [r0, #0]
+
+	LDR R0, =GPIOE
+ 800021c:	4837      	ldr	r0, [pc, #220]	@ (80002fc <trigger_prescaler_prescaler+0x1a>)
+	MOV R1, #0
+ 800021e:	f04f 0100 	mov.w	r1, #0
+	STRB R1, [R0, #ODR + 1]     @ all selected LEDs off initially
+ 8000222:	7541      	strb	r1, [r0, #21]
+
+	LDR R4, =200000             @ LED1 period
+ 8000224:	4c37      	ldr	r4, [pc, #220]	@ (8000304 <trigger_prescaler_prescaler+0x22>)
+	LDR R5, =700000             @ LED2 period
+ 8000226:	4d38      	ldr	r5, [pc, #224]	@ (8000308 <trigger_prescaler_prescaler+0x26>)
+
+	@ next toggle times
+	MOV R6, #0                  @ LED1 next toggle time
+ 8000228:	f04f 0600 	mov.w	r6, #0
+	MOV R7, #0                  @ LED2 next toggle time
+ 800022c:	f04f 0700 	mov.w	r7, #0
+
+08000230 <main_loop>:
+
+main_loop:
+	@ read current timer count
+	LDR R0, =TIM2
+ 8000230:	f04f 4080 	mov.w	r0, #1073741824	@ 0x40000000
+	LDR R1, [R0, #TIM_CNT]      @ current time
+ 8000234:	6a41      	ldr	r1, [r0, #36]	@ 0x24
+
+	@comparing values to check whether the time has been reched
+	CMP R1, R6
+ 8000236:	42b1      	cmp	r1, r6
+	BLT skip_led1
+ 8000238:	db05      	blt.n	8000246 <skip_led1>
+
+	LDR R0, =GPIOE
+ 800023a:	4830      	ldr	r0, [pc, #192]	@ (80002fc <trigger_prescaler_prescaler+0x1a>)
+	LDRB R2, [R0, #ODR + 1]
+ 800023c:	7d42      	ldrb	r2, [r0, #21]
+	EOR R2, R2, #(1 << 0)       @ toggle LED1
+ 800023e:	f082 0201 	eor.w	r2, r2, #1
+	STRB R2, [R0, #ODR + 1]
+ 8000242:	7542      	strb	r2, [r0, #21]
+
+	ADD R6, R6, R4              @ next LED1 toggle time
+ 8000244:	4426      	add	r6, r4
+
+08000246 <skip_led1>:
+
+skip_led1:
+	LDR R0, =TIM2
+ 8000246:	f04f 4080 	mov.w	r0, #1073741824	@ 0x40000000
+	LDR R1, [R0, #TIM_CNT]      @ read again just to be safe
+ 800024a:	6a41      	ldr	r1, [r0, #36]	@ 0x24
+
+	CMP R1, R7
+ 800024c:	42b9      	cmp	r1, r7
+	BLT skip_led2
+ 800024e:	db05      	blt.n	800025c <skip_led2>
+
+	LDR R0, =GPIOE
+ 8000250:	482a      	ldr	r0, [pc, #168]	@ (80002fc <trigger_prescaler_prescaler+0x1a>)
+	LDRB R2, [R0, #ODR + 1]
+ 8000252:	7d42      	ldrb	r2, [r0, #21]
+	EOR R2, R2, #(1 << 1)       @ toggle LED2
+ 8000254:	f082 0202 	eor.w	r2, r2, #2
+	STRB R2, [R0, #ODR + 1]
+ 8000258:	7542      	strb	r2, [r0, #21]
+
+	ADD R7, R7, R5              @ next LED2 toggle time
+ 800025a:	442f      	add	r7, r5
+
+0800025c <skip_led2>:
 
 skip_led2:
-	B main_loop */
+	B main_loop
+ 800025c:	e7e8      	b.n	8000230 <main_loop>
+
+0800025e <stop>:
 
 stop:
 	B stop @stopping the file
- 8000216:	e7fe      	b.n	8000216 <stop>
+ 800025e:	e7fe      	b.n	800025e <stop>
 
-08000218 <timer>:
+08000260 <timer>:
 
 timer:
 	@initialising timer
 	LDR R1, =TIM2 @initialising timer 2
- 8000218:	f04f 4180 	mov.w	r1, #1073741824	@ 0x40000000
+ 8000260:	f04f 4180 	mov.w	r1, #1073741824	@ 0x40000000
 
 	@resetting the timer to zero
 	MOV R4, #0 @putting 0 in register R2
- 800021c:	f04f 0400 	mov.w	r4, #0
+ 8000264:	f04f 0400 	mov.w	r4, #0
     STR R4, [R1, #TIM_CNT]   @ reset counter
- 8000220:	624c      	str	r4, [r1, #36]	@ 0x24
+ 8000268:	624c      	str	r4, [r1, #36]	@ 0x24
 
 	@storing counting timer
 	MOV R6, #1 @putting 1 in register R2
- 8000222:	f04f 0601 	mov.w	r6, #1
+ 800026a:	f04f 0601 	mov.w	r6, #1
 	STR R6, [R1, #TIM_CR1] @storing counting timer
- 8000226:	600e      	str	r6, [r1, #0]
+ 800026e:	600e      	str	r6, [r1, #0]
 
 	@creating loading function
 	LDR R8, =50000000 @setting value for when overflow
- 8000228:	f8df 8074 	ldr.w	r8, [pc, #116]	@ 80002a0 <trigger_prescaler_prescaler+0x22>
+ 8000270:	f8df 8098 	ldr.w	r8, [pc, #152]	@ 800030c <trigger_prescaler_prescaler+0x2a>
 	STR R8, [R1, TIM_ARR] @set the ARR register
- 800022c:	f8c1 802c 	str.w	r8, [r1, #44]	@ 0x2c
+ 8000274:	f8c1 802c 	str.w	r8, [r1, #44]	@ 0x2c
 
-08000230 <delay>:
+08000278 <delay>:
 
+@delay loop using time passed through register R1
 delay:
 	@picking delay length
 	LDR R3, =50000000 @picking max time to go
- 8000230:	4b1b      	ldr	r3, [pc, #108]	@ (80002a0 <trigger_prescaler_prescaler+0x22>)
+ 8000278:	4b24      	ldr	r3, [pc, #144]	@ (800030c <trigger_prescaler_prescaler+0x2a>)
 
-08000232 <delay_loop>:
+0800027a <delay_loop>:
 
 
 delay_loop:
 	LDR R5, [R1, #TIM_CNT] @loading the value of TIM_CMT into R5
- 8000232:	6a4d      	ldr	r5, [r1, #36]	@ 0x24
+ 800027a:	6a4d      	ldr	r5, [r1, #36]	@ 0x24
 	CMP R5, R3 @compare the two values
- 8000234:	429d      	cmp	r5, r3
+ 800027c:	429d      	cmp	r5, r3
 
 	BLT delay_loop @loop if less than
- 8000236:	dbfc      	blt.n	8000232 <delay_loop>
+ 800027e:	dbfc      	blt.n	800027a <delay_loop>
 
 	BX LR @back to preceding function
- 8000238:	4770      	bx	lr
+ 8000280:	4770      	bx	lr
 
-0800023a <delay_prescaler>:
+08000282 <trigger_prescaler>:
+
+trigger_prescaler:
+	LDR R0, =TIM2 @load the base address for the timer
+ 8000282:	f04f 4080 	mov.w	r0, #1073741824	@ 0x40000000
+
+	LDR R1, =0x1 @setting value for when overflow
+ 8000286:	f04f 0101 	mov.w	r1, #1
+	STR R1, [R0, TIM_ARR] @set the ARR register
+ 800028a:	62c1      	str	r1, [r0, #44]	@ 0x2c
+
+	MOV R2, #0 @loading value to R2
+ 800028c:	f04f 0200 	mov.w	r2, #0
+	STR R2, [R0, #TIM_CNT] @resetting value of timer to 0
+ 8000290:	6242      	str	r2, [r0, #36]	@ 0x24
+
+	NOP @stalling for time
+ 8000292:	bf00      	nop
+	NOP @stalling for time
+ 8000294:	bf00      	nop
+
+	LDR R1, =0xffffffff @ set the ARR back to the default value
+ 8000296:	f04f 31ff 	mov.w	r1, #4294967295
+	STR R1, [R0, TIM_ARR] @ set the ARR register
+ 800029a:	62c1      	str	r1, [r0, #44]	@ 0x2c
+
+	BX LR @back to prescaler
+ 800029c:	4770      	bx	lr
+
+0800029e <delay_prescaler>:
+
 @using prescaler
-
 delay_prescaler:
 
 	@initialising timer
 	LDR R0, =TIM2 @initialising timer 2
- 800023a:	f04f 4080 	mov.w	r0, #1073741824	@ 0x40000000
+ 800029e:	f04f 4080 	mov.w	r0, #1073741824	@ 0x40000000
 
 	MOV R2, #0 @putting 0 in register R2
- 800023e:	f04f 0200 	mov.w	r2, #0
+ 80002a2:	f04f 0200 	mov.w	r2, #0
     STR R2, [R0, #TIM_CNT]   @ reset counter
- 8000242:	6242      	str	r2, [r0, #36]	@ 0x24
+ 80002a6:	6242      	str	r2, [r0, #36]	@ 0x24
 
     @ clear update flag first check if the registers here are correct
 	LDR R2, [R0, #TIM_SR]
- 8000244:	6902      	ldr	r2, [r0, #16]
+ 80002a8:	6902      	ldr	r2, [r0, #16]
 	BIC R2, R2, #1
- 8000246:	f022 0201 	bic.w	r2, r2, #1
+ 80002aa:	f022 0201 	bic.w	r2, r2, #1
 	STR R2, [R0, #TIM_SR]
- 800024a:	6102      	str	r2, [r0, #16]
+ 80002ae:	6102      	str	r2, [r0, #16]
 
 	MOV R2, #1 @putting 1 in register R2
- 800024c:	f04f 0201 	mov.w	r2, #1
+ 80002b0:	f04f 0201 	mov.w	r2, #1
 	STR R2, [R0, #TIM_CR1] @storing counting timer
- 8000250:	6002      	str	r2, [r0, #0]
+ 80002b4:	6002      	str	r2, [r0, #0]
 
-	LDR R3, =5 @picking max time to go for 5 seconds
- 8000252:	f04f 0305 	mov.w	r3, #5
+	LDR R3, =1 @picking max time to go for 5 seconds
+ 80002b6:	f04f 0301 	mov.w	r3, #1
 
-08000256 <delay_loop_prescaler>:
+080002ba <delay_loop_prescaler>:
 	@LDR R3, = 3600 @picking max time to go for an hour
 
 delay_loop_prescaler:
 	@BLT delay_loop
 	LDR R2, [R0, #TIM_SR]       @ read status
- 8000256:	6902      	ldr	r2, [r0, #16]
+ 80002ba:	6902      	ldr	r2, [r0, #16]
     TST R2, #1                  @ test UIF bit
- 8000258:	f012 0f01 	tst.w	r2, #1
+ 80002bc:	f012 0f01 	tst.w	r2, #1
     BEQ delay_loop_prescaler            @ stay until UIF = 1
- 800025c:	d0fb      	beq.n	8000256 <delay_loop_prescaler>
+ 80002c0:	d0fb      	beq.n	80002ba <delay_loop_prescaler>
 
     LDR R2, [R0, #TIM_SR]       @ clear UIF after delay
- 800025e:	6902      	ldr	r2, [r0, #16]
+ 80002c2:	6902      	ldr	r2, [r0, #16]
     BIC R2, R2, #1
- 8000260:	f022 0201 	bic.w	r2, r2, #1
+ 80002c4:	f022 0201 	bic.w	r2, r2, #1
     STR R2, [R0, #TIM_SR]
- 8000264:	6102      	str	r2, [r0, #16]
+ 80002c8:	6102      	str	r2, [r0, #16]
 
     SUBS R3, R3, #1
- 8000266:	3b01      	subs	r3, #1
+ 80002ca:	3b01      	subs	r3, #1
 	BNE delay_loop_prescaler
- 8000268:	d1f5      	bne.n	8000256 <delay_loop_prescaler>
+ 80002cc:	d1f5      	bne.n	80002ba <delay_loop_prescaler>
 
 	BX LR
- 800026a:	4770      	bx	lr
+ 80002ce:	4770      	bx	lr
 
-0800026c <prescaler_prescaler>:
+080002d0 <prescaler_prescaler>:
 
 @creating prescaler
 prescaler_prescaler:
 	@storing a value for the prescaler
 	LDR R0, =TIM2 @load the base address for the timer
- 800026c:	f04f 4080 	mov.w	r0, #1073741824	@ 0x40000000
+ 80002d0:	f04f 4080 	mov.w	r0, #1073741824	@ 0x40000000
 	LDR R1, = 7999 @putting the prescaler value into R1 for 1 second
- 8000270:	f641 713f 	movw	r1, #7999	@ 0x1f3f
+ 80002d4:	f641 713f 	movw	r1, #7999	@ 0x1f3f
 	@LDR R1, = 7 @putting prescaler value into R1 for 1 microsecond
 	STR R1, [R0, TIM_PSC] @setting prescaler register
- 8000274:	6281      	str	r1, [r0, #40]	@ 0x28
+ 80002d8:	6281      	str	r1, [r0, #40]	@ 0x28
 
 	@setting ARPE = 1
 	LDR R1, [R0, #TIM_CR1]
- 8000276:	6801      	ldr	r1, [r0, #0]
+ 80002da:	6801      	ldr	r1, [r0, #0]
 	ORR R1, R1, #(1 << 7)
- 8000278:	f041 0180 	orr.w	r1, r1, #128	@ 0x80
+ 80002dc:	f041 0180 	orr.w	r1, r1, #128	@ 0x80
 	STR R1, [R0, #TIM_CR1]
- 800027c:	6001      	str	r1, [r0, #0]
+ 80002e0:	6001      	str	r1, [r0, #0]
 
-0800027e <trigger_prescaler_prescaler>:
+080002e2 <trigger_prescaler_prescaler>:
 
 trigger_prescaler_prescaler:
 	LDR R0, =TIM2 @load the base address for the timer
- 800027e:	f04f 4080 	mov.w	r0, #1073741824	@ 0x40000000
+ 80002e2:	f04f 4080 	mov.w	r0, #1073741824	@ 0x40000000
 
 	LDR R1, =999 @setting value for when overflow
- 8000282:	f240 31e7 	movw	r1, #999	@ 0x3e7
+ 80002e6:	f240 31e7 	movw	r1, #999	@ 0x3e7
 	STR R1, [R0, TIM_ARR] @set the ARR register
- 8000286:	62c1      	str	r1, [r0, #44]	@ 0x2c
+ 80002ea:	62c1      	str	r1, [r0, #44]	@ 0x2c
 
 	MOV R1, #1
- 8000288:	f04f 0101 	mov.w	r1, #1
+ 80002ec:	f04f 0101 	mov.w	r1, #1
 	STR R1, [R0, #TIM_EGR]   @ force update event
- 800028c:	6141      	str	r1, [r0, #20]
+ 80002f0:	6141      	str	r1, [r0, #20]
 
 	MOV R2, #0 @loading value to R2
- 800028e:	f04f 0200 	mov.w	r2, #0
+ 80002f2:	f04f 0200 	mov.w	r2, #0
 	STR R2, [R0, #TIM_CNT] @resetting value of timer to 0
- 8000292:	6242      	str	r2, [r0, #36]	@ 0x24
+ 80002f6:	6242      	str	r2, [r0, #36]	@ 0x24
 
 	BX LR @back to prescaler
- 8000294:	4770      	bx	lr
- 8000296:	0000      	.short	0x0000
+ 80002f8:	4770      	bx	lr
+ 80002fa:	0000      	.short	0x0000
 	LDR R0, =GPIOE
- 8000298:	48001000 	.word	0x48001000
+ 80002fc:	48001000 	.word	0x48001000
 	LDR R0, =RCC @load the address of the RCC
- 800029c:	40021000 	.word	0x40021000
+ 8000300:	40021000 	.word	0x40021000
+	LDR R4, =200000             @ LED1 period
+ 8000304:	00030d40 	.word	0x00030d40
+	LDR R5, =700000             @ LED2 period
+ 8000308:	000aae60 	.word	0x000aae60
 	LDR R8, =50000000 @setting value for when overflow
- 80002a0:	02faf080 	.word	0x02faf080
+ 800030c:	02faf080 	.word	0x02faf080
 
-080002a4 <Reset_Handler>:
+08000310 <Reset_Handler>:
 
   .section .text.Reset_Handler
   .weak Reset_Handler
   .type Reset_Handler, %function
 Reset_Handler:
   ldr   r0, =_estack
- 80002a4:	480d      	ldr	r0, [pc, #52]	@ (80002dc <LoopForever+0x2>)
+ 8000310:	480d      	ldr	r0, [pc, #52]	@ (8000348 <LoopForever+0x2>)
   mov   sp, r0          /* set stack pointer */
- 80002a6:	4685      	mov	sp, r0
+ 8000312:	4685      	mov	sp, r0
 /* Call the clock system initialization function.*/
   bl  SystemInit
- 80002a8:	f3af 8000 	nop.w
+ 8000314:	f3af 8000 	nop.w
 
 /* Copy the data segment initializers from flash to SRAM */
   ldr r0, =_sdata
- 80002ac:	480c      	ldr	r0, [pc, #48]	@ (80002e0 <LoopForever+0x6>)
+ 8000318:	480c      	ldr	r0, [pc, #48]	@ (800034c <LoopForever+0x6>)
   ldr r1, =_edata
- 80002ae:	490d      	ldr	r1, [pc, #52]	@ (80002e4 <LoopForever+0xa>)
+ 800031a:	490d      	ldr	r1, [pc, #52]	@ (8000350 <LoopForever+0xa>)
   ldr r2, =_sidata
- 80002b0:	4a0d      	ldr	r2, [pc, #52]	@ (80002e8 <LoopForever+0xe>)
+ 800031c:	4a0d      	ldr	r2, [pc, #52]	@ (8000354 <LoopForever+0xe>)
   movs r3, #0
- 80002b2:	2300      	movs	r3, #0
+ 800031e:	2300      	movs	r3, #0
   b LoopCopyDataInit
- 80002b4:	e002      	b.n	80002bc <LoopCopyDataInit>
+ 8000320:	e002      	b.n	8000328 <LoopCopyDataInit>
 
-080002b6 <CopyDataInit>:
+08000322 <CopyDataInit>:
 
 CopyDataInit:
   ldr r4, [r2, r3]
- 80002b6:	58d4      	ldr	r4, [r2, r3]
+ 8000322:	58d4      	ldr	r4, [r2, r3]
   str r4, [r0, r3]
- 80002b8:	50c4      	str	r4, [r0, r3]
+ 8000324:	50c4      	str	r4, [r0, r3]
   adds r3, r3, #4
- 80002ba:	3304      	adds	r3, #4
+ 8000326:	3304      	adds	r3, #4
 
-080002bc <LoopCopyDataInit>:
+08000328 <LoopCopyDataInit>:
 
 LoopCopyDataInit:
   adds r4, r0, r3
- 80002bc:	18c4      	adds	r4, r0, r3
+ 8000328:	18c4      	adds	r4, r0, r3
   cmp r4, r1
- 80002be:	428c      	cmp	r4, r1
+ 800032a:	428c      	cmp	r4, r1
   bcc CopyDataInit
- 80002c0:	d3f9      	bcc.n	80002b6 <CopyDataInit>
+ 800032c:	d3f9      	bcc.n	8000322 <CopyDataInit>
 
 /* Zero fill the bss segment. */
   ldr r2, =_sbss
- 80002c2:	4a0a      	ldr	r2, [pc, #40]	@ (80002ec <LoopForever+0x12>)
+ 800032e:	4a0a      	ldr	r2, [pc, #40]	@ (8000358 <LoopForever+0x12>)
   ldr r4, =_ebss
- 80002c4:	4c0a      	ldr	r4, [pc, #40]	@ (80002f0 <LoopForever+0x16>)
+ 8000330:	4c0a      	ldr	r4, [pc, #40]	@ (800035c <LoopForever+0x16>)
   movs r3, #0
- 80002c6:	2300      	movs	r3, #0
+ 8000332:	2300      	movs	r3, #0
   b LoopFillZerobss
- 80002c8:	e001      	b.n	80002ce <LoopFillZerobss>
+ 8000334:	e001      	b.n	800033a <LoopFillZerobss>
 
-080002ca <FillZerobss>:
+08000336 <FillZerobss>:
 
 FillZerobss:
   str  r3, [r2]
- 80002ca:	6013      	str	r3, [r2, #0]
+ 8000336:	6013      	str	r3, [r2, #0]
   adds r2, r2, #4
- 80002cc:	3204      	adds	r2, #4
+ 8000338:	3204      	adds	r2, #4
 
-080002ce <LoopFillZerobss>:
+0800033a <LoopFillZerobss>:
 
 LoopFillZerobss:
   cmp r2, r4
- 80002ce:	42a2      	cmp	r2, r4
+ 800033a:	42a2      	cmp	r2, r4
   bcc FillZerobss
- 80002d0:	d3fb      	bcc.n	80002ca <FillZerobss>
+ 800033c:	d3fb      	bcc.n	8000336 <FillZerobss>
 
 
 /* Call static constructors */
   bl __libc_init_array
- 80002d2:	f000 f811 	bl	80002f8 <__libc_init_array>
+ 800033e:	f000 f811 	bl	8000364 <__libc_init_array>
 /* Call the application's entry point.*/
 
   bl main
- 80002d6:	f7ff ff8e 	bl	80001f6 <main>
+ 8000342:	f7ff ff58 	bl	80001f6 <main>
 
-080002da <LoopForever>:
+08000346 <LoopForever>:
 
 LoopForever:
   b LoopForever
- 80002da:	e7fe      	b.n	80002da <LoopForever>
+ 8000346:	e7fe      	b.n	8000346 <LoopForever>
   ldr   r0, =_estack
- 80002dc:	2000a000 	.word	0x2000a000
+ 8000348:	2000a000 	.word	0x2000a000
   ldr r0, =_sdata
- 80002e0:	20000000 	.word	0x20000000
+ 800034c:	20000000 	.word	0x20000000
   ldr r1, =_edata
- 80002e4:	20000000 	.word	0x20000000
+ 8000350:	20000000 	.word	0x20000000
   ldr r2, =_sidata
- 80002e8:	08000360 	.word	0x08000360
+ 8000354:	080003cc 	.word	0x080003cc
   ldr r2, =_sbss
- 80002ec:	20000000 	.word	0x20000000
+ 8000358:	20000000 	.word	0x20000000
   ldr r4, =_ebss
- 80002f0:	2000001c 	.word	0x2000001c
+ 800035c:	2000001c 	.word	0x2000001c
 
-080002f4 <ADC1_2_IRQHandler>:
+08000360 <ADC1_2_IRQHandler>:
  * @retval : None
 */
   .section .text.Default_Handler,"ax",%progbits
 Default_Handler:
 Infinite_Loop:
   b Infinite_Loop
- 80002f4:	e7fe      	b.n	80002f4 <ADC1_2_IRQHandler>
+ 8000360:	e7fe      	b.n	8000360 <ADC1_2_IRQHandler>
 	...
 
-080002f8 <__libc_init_array>:
- 80002f8:	b570      	push	{r4, r5, r6, lr}
- 80002fa:	4b0d      	ldr	r3, [pc, #52]	@ (8000330 <__libc_init_array+0x38>)
- 80002fc:	4d0d      	ldr	r5, [pc, #52]	@ (8000334 <__libc_init_array+0x3c>)
- 80002fe:	1b5b      	subs	r3, r3, r5
- 8000300:	109c      	asrs	r4, r3, #2
- 8000302:	2600      	movs	r6, #0
- 8000304:	42a6      	cmp	r6, r4
- 8000306:	d109      	bne.n	800031c <__libc_init_array+0x24>
- 8000308:	f000 f81a 	bl	8000340 <_init>
- 800030c:	4d0a      	ldr	r5, [pc, #40]	@ (8000338 <__libc_init_array+0x40>)
- 800030e:	4b0b      	ldr	r3, [pc, #44]	@ (800033c <__libc_init_array+0x44>)
- 8000310:	1b5b      	subs	r3, r3, r5
- 8000312:	109c      	asrs	r4, r3, #2
- 8000314:	2600      	movs	r6, #0
- 8000316:	42a6      	cmp	r6, r4
- 8000318:	d105      	bne.n	8000326 <__libc_init_array+0x2e>
- 800031a:	bd70      	pop	{r4, r5, r6, pc}
- 800031c:	f855 3b04 	ldr.w	r3, [r5], #4
- 8000320:	4798      	blx	r3
- 8000322:	3601      	adds	r6, #1
- 8000324:	e7ee      	b.n	8000304 <__libc_init_array+0xc>
- 8000326:	f855 3b04 	ldr.w	r3, [r5], #4
- 800032a:	4798      	blx	r3
- 800032c:	3601      	adds	r6, #1
- 800032e:	e7f2      	b.n	8000316 <__libc_init_array+0x1e>
- 8000330:	08000358 	.word	0x08000358
- 8000334:	08000358 	.word	0x08000358
- 8000338:	08000358 	.word	0x08000358
- 800033c:	0800035c 	.word	0x0800035c
+08000364 <__libc_init_array>:
+ 8000364:	b570      	push	{r4, r5, r6, lr}
+ 8000366:	4b0d      	ldr	r3, [pc, #52]	@ (800039c <__libc_init_array+0x38>)
+ 8000368:	4d0d      	ldr	r5, [pc, #52]	@ (80003a0 <__libc_init_array+0x3c>)
+ 800036a:	1b5b      	subs	r3, r3, r5
+ 800036c:	109c      	asrs	r4, r3, #2
+ 800036e:	2600      	movs	r6, #0
+ 8000370:	42a6      	cmp	r6, r4
+ 8000372:	d109      	bne.n	8000388 <__libc_init_array+0x24>
+ 8000374:	f000 f81a 	bl	80003ac <_init>
+ 8000378:	4d0a      	ldr	r5, [pc, #40]	@ (80003a4 <__libc_init_array+0x40>)
+ 800037a:	4b0b      	ldr	r3, [pc, #44]	@ (80003a8 <__libc_init_array+0x44>)
+ 800037c:	1b5b      	subs	r3, r3, r5
+ 800037e:	109c      	asrs	r4, r3, #2
+ 8000380:	2600      	movs	r6, #0
+ 8000382:	42a6      	cmp	r6, r4
+ 8000384:	d105      	bne.n	8000392 <__libc_init_array+0x2e>
+ 8000386:	bd70      	pop	{r4, r5, r6, pc}
+ 8000388:	f855 3b04 	ldr.w	r3, [r5], #4
+ 800038c:	4798      	blx	r3
+ 800038e:	3601      	adds	r6, #1
+ 8000390:	e7ee      	b.n	8000370 <__libc_init_array+0xc>
+ 8000392:	f855 3b04 	ldr.w	r3, [r5], #4
+ 8000396:	4798      	blx	r3
+ 8000398:	3601      	adds	r6, #1
+ 800039a:	e7f2      	b.n	8000382 <__libc_init_array+0x1e>
+ 800039c:	080003c4 	.word	0x080003c4
+ 80003a0:	080003c4 	.word	0x080003c4
+ 80003a4:	080003c4 	.word	0x080003c4
+ 80003a8:	080003c8 	.word	0x080003c8
 
-08000340 <_init>:
- 8000340:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
- 8000342:	bf00      	nop
- 8000344:	bcf8      	pop	{r3, r4, r5, r6, r7}
- 8000346:	bc08      	pop	{r3}
- 8000348:	469e      	mov	lr, r3
- 800034a:	4770      	bx	lr
+080003ac <_init>:
+ 80003ac:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 80003ae:	bf00      	nop
+ 80003b0:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 80003b2:	bc08      	pop	{r3}
+ 80003b4:	469e      	mov	lr, r3
+ 80003b6:	4770      	bx	lr
 
-0800034c <_fini>:
- 800034c:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
- 800034e:	bf00      	nop
- 8000350:	bcf8      	pop	{r3, r4, r5, r6, r7}
- 8000352:	bc08      	pop	{r3}
- 8000354:	469e      	mov	lr, r3
- 8000356:	4770      	bx	lr
+080003b8 <_fini>:
+ 80003b8:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 80003ba:	bf00      	nop
+ 80003bc:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 80003be:	bc08      	pop	{r3}
+ 80003c0:	469e      	mov	lr, r3
+ 80003c2:	4770      	bx	lr

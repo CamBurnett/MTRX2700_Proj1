@@ -1,26 +1,43 @@
-# Compiled files
-*.exe
+# =========================
+# Build folders
+# =========================
+Debug/
+Release/
+build/
+
+# =========================
+# STM32CubeIDE / Eclipse settings
+# =========================
+.settings/
+.cproject
+.project
+.metadata/
+
+# =========================
+# Generated build files
+# =========================
+*.elf
+*.bin
+*.hex
+*.map
+*.list
 *.o
-*.pyc
+*.d
 
-# Folders
-node_modules/
-__pycache__/
-.venv/
+# =========================
+# Debug / intermediate files
+# =========================
+*.log
+*.tmp
+*.bak
 
-# IDE settings
-.vscode/
-.idea/
-
+# =========================
 # OS files
+# =========================
 .DS_Store
 Thumbs.db
 
-# Logs
-*.log
-
-# Environment files
-.env
-
-# Specific file
-secrets.txt
+# =========================
+# VS Code / other editors (optional)
+# =========================
+.vscode/

@@ -23,9 +23,11 @@ main:
 	STRB R7, [R0, #ODR + 1] @loading the LED 'on' into GPIOE_ODR
 
 	@BL prescaler @starting the prescaler
-	BL timer @branching into delay function using timer
-	@BL prescaler_prescaler
-	@BL delay_prescaler
+	@BL timer @branching into delay function using timer
+
+	@hardware delay function
+	BL prescaler_prescaler @branching into prescaler delay
+	BL delay_prescaler @branching into delay function
 
 
 	@turning off LEDs
@@ -129,6 +131,23 @@ delay_loop:
 
 	BX LR @back to preceding function
 
+trigger_prescaler:
+	LDR R0, =TIM2 @load the base address for the timer
+
+	LDR R1, =0x1 @setting value for when overflow
+	STR R1, [R0, TIM_ARR] @set the ARR register
+
+	MOV R2, #0 @loading value to R2
+	STR R2, [R0, #TIM_CNT] @resetting value of timer to 0
+
+	NOP @stalling for time
+	NOP @stalling for time
+
+	LDR R1, =0xffffffff @ set the ARR back to the default value
+	STR R1, [R0, TIM_ARR] @ set the ARR register
+
+	BX LR @back to prescaler
+
 @using prescaler
 delay_prescaler:
 
@@ -146,7 +165,7 @@ delay_prescaler:
 	MOV R2, #1 @putting 1 in register R2
 	STR R2, [R0, #TIM_CR1] @storing counting timer
 
-	LDR R3, =5 @picking max time to go for 5 seconds
+	LDR R3, =1 @picking max time to go for 5 seconds
 	@LDR R3, = 3600 @picking max time to go for an hour
 
 delay_loop_prescaler:
