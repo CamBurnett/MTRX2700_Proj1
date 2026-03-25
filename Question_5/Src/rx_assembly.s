@@ -1,6 +1,4 @@
 @Receiving end code. Here, it grabs the start flag, length and computes for the correct final length, and then computes the checksum
-@We'll neeed to extract the count number from the received data and send it to Elena's code so her lights can display the count.
-@Right now it only reads in the whole package
 .syntax unified
 .thumb
 
