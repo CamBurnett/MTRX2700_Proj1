@@ -60,7 +60,14 @@ High-Level Information about code:
 1. Allocate a buffer of space for string
 2. Initialise the Board Clocks, Peripherals and UART configurations for Receive and Transmit pins and Button configuation
 3. Wait until the user presses the button to continue further
-4. First, append the STX 
+4. First, append the STX to the first byte of the buffer
+5. Copy the string into the third byte (leaving room for the message length byte)
+6. Convert lowercase letters to uppercase and concatanate into buffer, while counting amount of letters in string
+7. Add in message length into buffer
+8. Append ETX onto end of message
+9. Compute an XOR checksum of the message, using same method as discussed in Question 1
+10. Transmit the message byte by byte through UART1 until transmit register is empty
+11. Reply with an acknowledgement of message 
 
 Instructions for user:
 Details about testing procedure:
