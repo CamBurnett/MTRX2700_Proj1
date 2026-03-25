@@ -100,7 +100,9 @@ Details about testing procedure:
 7. After transmission completes, the function returns and is called again in a loop, continuously retransmitting the same packet
 
 Question 4: Chelsea Satriavi
+
 High-Level Information about code:
+
 **Basic Delay Polling**
 1. Load the base address of TIM2
 2. Reset the timer counter (TIM_CNT) to 0
@@ -143,6 +145,7 @@ High-Level Information about code:
 13. Loop continuously so both LEDs toggle at different frequencies without blocking each other
 
 Instructions for user:
+
 Ensure TIM2 clock is enabled before running the program
 **For basic delay:**
 Use the timer, delay, and delay_loop functions
