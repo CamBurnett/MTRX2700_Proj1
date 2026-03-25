@@ -215,6 +215,7 @@ Details about testing procedure:
 3. If the receiver receives an incorrect message, a NAK byte is pushed and the LED's will flash after 5 seconds
 
 
-<img width="408" height="461" alt="block diagram" src="https://github.com/user-attachments/assets/ed0dd1fd-3cf9-448d-93c2-274f74ec0861" />
+
+<img width="524" height="542" alt="block diagram drawio" src="https://github.com/user-attachments/assets/b6f686fb-441d-4404-b6b3-fbe3b690f1cc" />
 
 
