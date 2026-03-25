@@ -12,7 +12,7 @@ Elena Zengovski
 
 Tasks:
 
-**Question 1: Cameron Burnett**
+Question 1: Cameron Burnett
 
 High-Level Information about code:
 
@@ -49,8 +49,7 @@ Details about testing procedure:
 3. The structure of the finished message is: [STX - Message Length - String Body - ETX - Checksum]
 4. The verify loop checksum does not account for the checksum of the transmitted message, as it is not required
 
-**Question 2: Elena Zengovski**
-
+Question 2: Elena Zengovski
 High-Level Information about code:
 1. the program can be set to either a button mode or automatic mode to increase or decrease the counter
 2. If in button press mode, the program checks if the button is pressed
@@ -68,9 +67,10 @@ Details about testing procedure:
 3. confirming the pattern of the LEDs matches the binary values changing in R4
 4. Verifying the values being stored in the registers 
 
-**Question 3: Angus Malcom**
 
+Question 3: Angus Malcom
 High-Level Information about code:
+
 1. Allocate a buffer of space for string
 2. Initialise the Board Clocks, Peripherals and UART configurations for Receive and Transmit pins and Button configuation
 3. Wait until the user presses the button to continue further
@@ -84,30 +84,88 @@ High-Level Information about code:
 11. Reply with an acknowledgement of message 
 
 Instructions for user:
-1. Load an ASCII string into tx_string
-2. Set a buffer space into buffer to ensure the message has enough room for all bytes
-3. Press the user button (PA0) to begin transmission
-4. The message packet will be built into the buffer and transmitted over UART1 repeatedly
-5. The structure of the finished message is: [STX - Message Length - String Body - ETX - Checksum]
-
 Details about testing procedure:
-1. Original ASCII string is stored in tx_string in the data section
-2. The finished message is stored in the buffer, pointed to by R1
-3. The structure of the finished message is: [STX - Message Length - String Body - ETX - Checksum]
-4. Any lowercase letters in the source string are converted to uppercase during the copy into the buffer
-5. The checksum is computed by XORing all bytes in the buffer from STX through to ETX
-6. The message is transmitted byte by byte over UART1, verified by checking the TXE flag before each send
-7. After transmission completes, the function returns and is called again in a loop, continuously retransmitting the same packet
 
-**Question 4: Chelsea Satriavi**
-
+Question 4: Chelsea Satriavi
 High-Level Information about code:
+**Basic Delay Polling**
+1. Load the base address of TIM2
+2. Reset the timer counter (TIM_CNT) to 0
+3. Enable the timer by setting the CEN bit in TIM_CR1
+4. Set a large value in TIM_ARR to define the maximum count
+5. Load a target delay value into a register
+6. Continuously read TIM_CNT and compare it to the target value
+7. Stay in a loop until the timer count reaches the target value
+8. Exit the function once the required delay has elapsed
+
+**Prescaler-Based Hardware Delay**
+1. Load the base address of TIM2
+2. Set the prescaler (TIM_PSC) to control the timer tick speed
+3. Enable ARPE (Auto-Reload Preload Enable) in TIM_CR1
+4. Set the auto-reload value (TIM_ARR) to define overflow period
+5. Force an update event using TIM_EGR to apply prescaler and ARR values
+6. Reset the timer counter (TIM_CNT) to 0
+7. Clear the update interrupt flag (UIF) in TIM_SR
+8. Start the timer by enabling CEN in TIM_CR1
+9. Wait for the UIF flag in TIM_SR to become 1 (indicating overflow)
+10. Clear UIF after each overflow
+11. Repeat this process for a specified number of overflow periods
+12. Exit the function once the required number of periods has elapsed
+
+**Concurrent LED Blinking (Non-Blocking Timing)**
+1. Load the base address of TIM2
+2. Set the prescaler so the timer increments in microseconds
+3. Force update event to apply prescaler settings
+4. Reset TIM_CNT to 0
+5. Start the timer by enabling CEN
+6. Initialise GPIOE output register to turn LEDs off
+7. Store toggle periods for LED1 and LED2 in registers
+8. Initialise next toggle times for both LEDs to 0
+9. Continuously read the current timer value (TIM_CNT)
+10. Compare current time with LED1 next toggle time
+11. If current time has reached the scheduled time:
+    1) Toggle LED1 using XOR
+    2) Update the next toggle time by adding the period
+12. Repeat the same process for LED2 independently
+13. Loop continuously so both LEDs toggle at different frequencies without blocking each other
 
 Instructions for user:
+Ensure TIM2 clock is enabled before running the program
+**For basic delay:**
+Use the timer, delay, and delay_loop functions
+Adjust the delay length by modifying the target count value
+
+**For prescaler-based delay:**
+Call prescaler_prescaler and trigger_prescaler_prescaler
+Then call delay_prescaler
+Adjust delay duration by changing the number of overflow counts
+
+**For LED blinking:**
+Modify R4 to change LED1 frequency
+Modify R5 to change LED2 frequency
+Period values are in microseconds when prescaler is configured for 1 µs ticks
+LEDs will toggle automatically based on the defined timing values
 
 Details about testing procedure:
+**For basic delay:**
+Turn an LED on before calling the delay function
+Turn it off after the delay completes
+Verify that the LED stays on for the expected duration
 
-**Question 5: All**
+**For prescaler-based delay:**
+Use an LED to visually confirm delay length
+Ensure that each overflow corresponds to the expected time interval
+Confirm multiple overflows produce longer delays (e.g. 5 seconds)
+
+**For concurrent LED blinking:**
+Observe both LEDs running simultaneously
+Confirm that each LED toggles at its own frequency
+Change R4 and R5 values and verify behaviour updates correctly
+
+Ensure LEDs do not interfere with each other, confirming independent timing
+Verify timing accuracy by comparing expected periods with observed LED behaviour
+
+Question 5: All
 Tasks:
 - Cameron: Create Transmitted Message
 - Chelsea: Counter Logic
