@@ -12,7 +12,7 @@ Elena Zengovski
 
 Tasks:
 
-Question 1: Cameron Burnett
+**Question 1: Cameron Burnett**
 
 High-Level Information about code:
 
@@ -49,7 +49,7 @@ Details about testing procedure:
 3. The structure of the finished message is: [STX - Message Length - String Body - ETX - Checksum]
 4. The verify loop checksum does not account for the checksum of the transmitted message, as it is not required
 
-Question 2: Elena Zengovski
+**Question 2: Elena Zengovski**
 
 High-Level Information about code:
 1. the program can be set to either a button mode or automatic mode to increase or decrease the counter
@@ -68,8 +68,7 @@ Details about testing procedure:
 3. confirming the pattern of the LEDs matches the binary values changing in R4
 4. Verifying the values being stored in the registers 
 
-
-Question 3: Angus Malcom
+**Question 3: Angus Malcom**
 
 High-Level Information about code:
 1. Allocate a buffer of space for string
@@ -100,7 +99,7 @@ Details about testing procedure:
 6. The message is transmitted byte by byte over UART1, verified by checking the TXE flag before each send
 7. After transmission completes, the function returns and is called again in a loop, continuously retransmitting the same packet
 
-Question 4: Chelsea Satriavi
+**Question 4: Chelsea Satriavi**
 
 High-Level Information about code:
 
@@ -108,7 +107,7 @@ Instructions for user:
 
 Details about testing procedure:
 
-Question 5: All
+**Question 5: All**
 Tasks:
 - Cameron: Create Transmitted Message
 - Chelsea: Counter Logic
