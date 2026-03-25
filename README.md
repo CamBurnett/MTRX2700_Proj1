@@ -198,9 +198,21 @@ High-Level Information about code:
 3. Count the amount of digits in the counted total (1 for <10, 2 for 10-100, 3 for >100), and add to total length
 4. Concatanate message in buffer with structure: [STX - Message Length - String Prefix - Count Value - ETX]
 5. Perform a checksum of the message, same process as Question 1. Concatanate Checksum value onto message
-6. 
+6. Message package is sent to receiver over UART2 to UART3 on the receiver board.
+7. A checksum on the receiver board is performed on the message
+8. If the checksum is the same as the received checksum, the message is acknowledged
+9. If acknowledged, the package is sent back to trnsmitter board and counter is incremented after a second, otherwise lights flash after 5 seonds of no incrementation, and counter is reset.
+
 Instructions for user:
+1. Input an ASCII string
+2. Input a buffer length
+3. Run the receiver code (rx_assembly.s)
+4. Run the transmitter code (tx_assembly.s)
+
 Details about testing procedure:
+1. Receiver code must be run before transmitter code
+2. LED's on receiver board will light up in a binary order of the count value
+3. If the receiver receives an incorrect message, a NAK byte is pushed and the LED's will flash after 5 seconds
 
 
 <img width="408" height="461" alt="block diagram" src="https://github.com/user-attachments/assets/ed0dd1fd-3cf9-448d-93c2-274f74ec0861" />
