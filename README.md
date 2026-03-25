@@ -51,8 +51,22 @@ Details about testing procedure:
 
 Question 2: Elena Zengovski
 High-Level Information about code:
+1. the program can be set to either a button mode or automatic mode to increase or decrease the counter
+2. If in button press mode, the program checks if the button is pressed
+3. with each press, the counter goes up until it reaches its limit at 0xff and then back down to its limit 0x00
+4. In automatic mode, the counter updates continuously 
+
 Instructions for user:
+1. By default, the program starts in button mode (R7=0), this can be changed by changing R7 to 1
+2. In button mode, increase or decrease the counter by pressing the button
+3. when switching to automatic mode, rerun the program and the counter will update continuously
+
 Details about testing procedure:
+1. for button mode testing, testing to ensure that one button press corresponded to one increment or decrement
+2. for automatic mode, observing that the LEDs change at a continous and steady rate
+3. confirming the pattern of the LEDs matches the binary values changing in R4
+4. Verifying the values being stored in the registers 
+
 
 Question 3: Angus Malcom
 High-Level Information about code:
