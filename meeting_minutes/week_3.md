@@ -8,7 +8,7 @@ Apologies: NA
 Agenda Items: 
 | Action Items | Owner(s)           | Deadline        | Status |
 |-------------|--------------------|-----------------|--------|
-| Start Code  | Elena & Cam        | Week 4          | Done   |
+| Finish Code  | Elena & Cam        | Week 4          | Done   |
 | Plan Code   | Chelsea & Angus    | Friday Week 3   | Done   |
 | Start Code  | Chelsea & Angus    | Week 4          | Done   |
 
