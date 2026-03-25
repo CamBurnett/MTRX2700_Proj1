@@ -91,7 +91,7 @@ Instructions for user:
 2. Set a buffer space into buffer to ensure the message has enough room for all bytes
 3. Press the user button (PA0) to begin transmission
 4. The message packet will be built into the buffer and transmitted over UART1 repeatedly
-5. The packet format is: [STX] [Length] [Data] [ETX] [Checksum], where any lowercase letters are converted to uppercase
+5. The structure of the finished message is: [STX - Message Length - String Body - ETX - Checksum]
 
 Details about testing procedure:
 1. Original ASCII string is stored in tx_string in the data section
