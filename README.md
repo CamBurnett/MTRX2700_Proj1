@@ -50,6 +50,7 @@ Details about testing procedure:
 4. The verify loop checksum does not account for the checksum of the transmitted message, as it is not required
 
 Question 2: Elena Zengovski
+
 High-Level Information about code:
 1. the program can be set to either a button mode or automatic mode to increase or decrease the counter
 2. If in button press mode, the program checks if the button is pressed
@@ -69,8 +70,8 @@ Details about testing procedure:
 
 
 Question 3: Angus Malcom
-High-Level Information about code:
 
+High-Level Information about code:
 1. Allocate a buffer of space for string
 2. Initialise the Board Clocks, Peripherals and UART configurations for Receive and Transmit pins and Button configuation
 3. Wait until the user presses the button to continue further
@@ -84,11 +85,15 @@ High-Level Information about code:
 11. Reply with an acknowledgement of message 
 
 Instructions for user:
+
 Details about testing procedure:
 
 Question 4: Chelsea Satriavi
+
 High-Level Information about code:
+
 Instructions for user:
+
 Details about testing procedure:
 
 Question 5: All
